@@ -16,7 +16,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="17e2247c17eedf855a912c0fe7117ba6f9bda7d3">
+        sha1="a810ad3b4e00179a2c2f88dd4526824c830dbd98">
         <dex dex="/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_66cccb0b7f867f4d668368f588a6c46cdf52c18b/classes.dex" />
     </item>
     <item
@@ -34,7 +34,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="97da3a46f27d6618dc0bb03721bf44445ec315f9">
+        sha1="704de2cc928e77009f27b844b24998fd8866f92e">
         <dex dex="/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_c67b6570e937a0e1810fb601a2c88c4993739231/classes.dex" />
     </item>
 
