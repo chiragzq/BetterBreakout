@@ -1,0 +1,15 @@
+#Internal package file, do not edit.
+#Sun Jul 09 11:33:42 PDT 2017
+1.base=/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/res/resources-debug.ap_
+1.file=/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/res/resources-debug.ap_/AndroidManifest.xml
+2.base=/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/assets/debug
+3.set=ANDROID_RESOURCE
+2.set=ASSET
+2.file=/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/assets/debug/badlogic.jpg
+count=4
+1.set=ANDROID_RESOURCE
+3.base=/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/res/resources-debug.ap_
+0.set=ANDROID_RESOURCE
+0.base=/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/res/resources-debug.ap_
+3.file=/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/res/resources-debug.ap_/resources.arsc
+0.file=/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/res/resources-debug.ap_/res/drawable-xxhdpi-v4/ic_launcher.png

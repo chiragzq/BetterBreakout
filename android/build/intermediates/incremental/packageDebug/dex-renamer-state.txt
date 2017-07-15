@@ -1,0 +1,7 @@
+#Sat Jul 15 15:43:47 PDT 2017
+base.0=/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_c67b6570e937a0e1810fb601a2c88c4993739231
+renamed.1=classes.dex
+renamed.0=classes2.dex
+file.1=/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_66cccb0b7f867f4d668368f588a6c46cdf52c18b/classes.dex
+base.1=/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_66cccb0b7f867f4d668368f588a6c46cdf52c18b
+file.0=/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_c67b6570e937a0e1810fb601a2c88c4993739231/classes.dex
