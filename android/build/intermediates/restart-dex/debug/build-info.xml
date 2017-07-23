@@ -5,29 +5,29 @@
     density="420dpi"
     format="8"
     plugin-version="2.2.2"
-    timestamp="418825108596392"
+    timestamp="419906525085642"
     token="7311157965949394259"
     verifier="FULL_BUILD_REQUESTED" >
 
     <task
         name="javac"
-        duration="700" />
+        duration="246" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="225" />
+        duration="273" />
     <task
         name="verifier"
-        duration="14" />
+        duration="11" />
 
     <artifact
         location="/home/spafindoople/Downloads/BetterBreakout/android/build/outputs/apk/android-debug.apk"
         type="MAIN" />
 
     <build
-        timestamp="418825108596392"
+        timestamp="419906525085642"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
             location="/home/spafindoople/Downloads/BetterBreakout/android/build/outputs/apk/android-debug.apk"
