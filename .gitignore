@@ -2,3 +2,7 @@ local.properties
 .idea/
 .gradle/
 android/build/
+*~
+android/android.iml
+core/build/
+desktop/build/
