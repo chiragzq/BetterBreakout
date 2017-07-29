@@ -34,10 +34,14 @@ public class Game {
                 Side colSide = getCollisionSide(ball, brick.getBoundingRectangle());
                 switch(colSide) {
                     case LEFT: case RIGHT:
+                        ball.y -= ball.yVel;
+                        ball.x -= ball.xVel;
                         ball.xVel *= -1;
                         toDel.add(brick);
                         break;
                     case TOP: case BOTTOM:
+                        ball.x -= ball.xVel;
+                        ball.y -= ball.yVel;
                         ball.yVel *= -1;
                         toDel.add(brick);
                         break;
@@ -45,11 +49,18 @@ public class Game {
             }
             switch(getCollisionSide(ball, paddle.getBoundingRectangle())) {
                 case LEFT: case RIGHT:
+                    ball.x -= ball.xVel;
+                    ball.y -= ball.yVel;
                     ball.xVel *= -1;
                     break;
-                case TOP: case BOTTOM:
+                case BOTTOM:
+                    ball.x -= ball.xVel;
+                    ball.y -= ball.yVel;
                     ball.yVel *= -1;
                     break;
+                case TOP:
+                    System.out.println((int)((ball.getX() + ball.radius - paddle.getX() + paddle.getWidth()/2 + 60)*1.5));
+                    ball.setDirection((int)((ball.getX() + ball.radius - paddle.getX() + paddle.getWidth()/2 + 60)*1.5), 10);
             }
         }
         for(Brick b : toDel) {
@@ -83,10 +94,12 @@ public class Game {
      * @return which side on rect2 was hit by rect1
      */
     public Side getCollisionSide(Ball ball, Rectangle rect2) {
-        float xDis = Math.abs(ball.getX() + ball.getWidth()/2 - rect2.getX() + rect2.getWidth()/2);
-        float yDis = Math.abs(ball.getY() + ball.getHeight()/2 - rect2.getY() + rect2.getHeight()/2);
+        float xDis = Math.abs((ball.getX() + ball.radius) - (rect2.getX() + rect2.getWidth()/2));
+        float yDis = Math.abs((ball.getY() + ball.radius) - (rect2.getY() + rect2.getHeight()/2));
 
-        float xDisOld = Math.abs(ball.getX()-ball.xVel + ball.getWidth()/2 - rect2.getX() + rect2.getWidth()/2); //ball center - vel
+        float xDisOld = Math.abs((ball.getX()-ball.xVel + ball.radius) - (rect2.getX() + rect2.getWidth()/2)); //ball center - vel
+        float yDisOld = Math.abs((ball.getY()-ball.yVel + ball.radius) - (rect2.getY() + rect2.getHeight()/2)); //ball center - vel
+
 
         float avgWidth = (ball.radius*2 + rect2.width)/2;
         float avgHeight = (ball.radius*2 + rect2.height)/2;

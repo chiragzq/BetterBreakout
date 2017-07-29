@@ -54,8 +54,31 @@ public class Ball extends Sprite {
         }
     }
 
+    public void setDirection(int dir, int vel) {
+        switch(dir) {
+            case 0:case 360:
+                yVel = 0;
+                xVel = -vel;
+                break;
+            case 180:
+                yVel = 0;
+                xVel = vel;
+                break;
+            case 90:
+                yVel = vel;
+                xVel = 0;
+                break;
+            case 270:
+                yVel = -vel;
+                xVel = 0;
+                break;
+            default:
+                xVel = (float)Math.cos((360 - dir) % 90) * vel * (dir - 90 < 180 ? 1 : -1);
+                yVel = (float)Math.sin((360 - dir) % 90) * vel * (dir < 180 ? 1 : -1);
+        }
+    }
+
     public void launch() {
-        yVel = 5;
-        xVel = 5;
+        setDirection((int)(Math.random() * 180 - 1), 10);
     }
 }

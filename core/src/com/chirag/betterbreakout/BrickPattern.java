@@ -1,6 +1,7 @@
 package com.chirag.betterbreakout;
 
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -10,7 +11,8 @@ import java.util.List;
 public class BrickPattern {
     List<Brick> bricks;
     Texture brickTexture;
-    public static final int TOP_PADDING = 50;
+    public static final int TOP_PADDING = 120;
+    final Color[] rainbow = {Color.RED, Color.ORANGE, Color.GOLD, Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.PURPLE, Color.PINK, Color.WHITE};
 
     public BrickPattern(Texture brickTexture) {
         bricks = new ArrayList<Brick>();
@@ -27,14 +29,15 @@ public class BrickPattern {
             for(int j = BetterBreakout.GAME_HEIGHT - TOP_PADDING;
                 j >= BetterBreakout.GAME_HEIGHT - TOP_PADDING - height;
                 j -= Brick.HEIGHT + padding) {
-                add(i, j , Brick.WIDTH, Brick.HEIGHT);
+                Color c = rainbow[(BetterBreakout.GAME_HEIGHT - TOP_PADDING - j)/(Brick.HEIGHT+padding)];
+                add(i, j , Brick.WIDTH, Brick.HEIGHT, c);
             }
         }
 
     }
 
-    public void add(int x, int y, int width, int height) {
-        bricks.add(new Brick(brickTexture, x, y, width, height));
+    public void add(int x, int y, int width, int height, Color color) {
+        bricks.add(new Brick(brickTexture, x, y, width, height, color));
     }
 
     public void remove(Brick b) {
