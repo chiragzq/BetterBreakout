@@ -1,6 +1,7 @@
 package com.chirag.betterbreakout;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -10,6 +11,7 @@ import java.util.List;
 public class Game {
     int waveNum;
     int lives;
+    int score;
     Texture brickTexture;
     Paddle paddle;
     BrickPattern bricks;
@@ -22,58 +24,76 @@ public class Game {
         balls = new ArrayList<Ball>();
         balls.add(new Ball(15, 960, 110, brickTexture));
         paddle = new Paddle(120,20, 100, brickTexture);
+        score = 0;
     }
 
     public void update() {
         bricks.update();
         paddle.update();
-        List<Brick> toDel = new ArrayList<Brick>();
+        List<Brick> toDelBrick = new ArrayList<Brick>();
+        List<Ball> toDelBall = new ArrayList<Ball>();
         for(Ball ball : balls) {
             ball.update();
+            if(ball.isDead) toDelBall.add(ball);
             for(Brick brick: bricks.bricks) {
+                if(brick.isDead) toDelBrick.add(brick);
                 Side colSide = getCollisionSide(ball, brick.getBoundingRectangle());
                 switch(colSide) {
                     case LEFT: case RIGHT:
                         ball.y -= ball.yVel;
                         ball.x -= ball.xVel;
                         ball.xVel *= -1;
-                        toDel.add(brick);
+                        brick.gotHit();
+                        score++;
                         break;
                     case TOP: case BOTTOM:
                         ball.x -= ball.xVel;
                         ball.y -= ball.yVel;
                         ball.yVel *= -1;
-                        toDel.add(brick);
+                        brick.gotHit();
+                        score++;
                         break;
                 }
             }
             switch(getCollisionSide(ball, paddle.getBoundingRectangle())) {
                 case LEFT: case RIGHT:
+                    ball.xVel *= -1;
                     ball.x -= ball.xVel;
                     ball.y -= ball.yVel;
-                    ball.xVel *= -1;
                     break;
                 case BOTTOM:
+                    ball.yVel *= -1;
                     ball.x -= ball.xVel;
                     ball.y -= ball.yVel;
-                    ball.yVel *= -1;
                     break;
                 case TOP:
-                    System.out.println((int)((ball.getX() + ball.radius - paddle.getX() + paddle.getWidth()/2 + 60)*1.5));
-                    ball.setDirection((int)((ball.getX() + ball.radius - paddle.getX() + paddle.getWidth()/2 + 60)*1.5), 10);
+                    float xdif = paddle.getX() + paddle.getWidth()/2 - ball.getX() + ball.radius*2;
+                    if(xdif < 0)xdif = 0;
+                    if(xdif > paddle.getWidth()) xdif = paddle.getWidth();
+                    float angle = (xdif * 160 / paddle.getWidth()) + 10;
+                    System.out.println(xdif);
+                    ball.x -= ball.xVel;
+                    ball.y -= ball.yVel;
+                    ball.setDirection((int)angle, 10);
+
             }
+
         }
-        for(Brick b : toDel) {
-            bricks.remove(b);
+        bricks.removeAll(toDelBrick);
+        balls.removeAll(toDelBall);
+        if(balls.isEmpty()) {
+            int[] i = new int[3];
+            System.out.println(i[4]);
         }
     }
 
-    public void draw(SpriteBatch batch) {
+    public void draw(BitmapFont bitmapFont, SpriteBatch batch) {
         bricks.draw(batch);
         paddle.draw(batch);
         for(Ball ball : balls) {
             ball.draw(batch);
         }
+        bitmapFont.draw(batch, "Score: " + score, 0, BetterBreakout.GAME_HEIGHT);
     }
     public void reset() {
         waveNum = 0;
@@ -119,5 +139,13 @@ public class Game {
             }
         }
         return Side.NONE;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

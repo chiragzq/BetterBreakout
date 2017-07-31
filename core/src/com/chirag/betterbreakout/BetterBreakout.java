@@ -4,12 +4,14 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class BetterBreakout extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 	Game game;
+	BitmapFont bitmapFont;
 	static final int GAME_WIDTH = 1920;
 	static final int GAME_HEIGHT = 1080;
 
@@ -17,6 +19,7 @@ public class BetterBreakout extends ApplicationAdapter {
 	public void create () {
 		game = new Game(new Texture("brick.png"));
 		batch = new SpriteBatch();
+		bitmapFont = new BitmapFont(Gdx.files.internal("font.fnt"));
 		img = new Texture("brick.png");
 	}
 
@@ -28,7 +31,7 @@ public class BetterBreakout extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 
-		game.draw(batch);
+		game.draw(bitmapFont, batch);
 
 		batch.end();
 
@@ -38,5 +41,6 @@ public class BetterBreakout extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		img.dispose();
+		bitmapFont.dispose();
 	}
 }

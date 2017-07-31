@@ -44,8 +44,13 @@ public class BrickPattern {
         bricks.remove(b);
     }
 
-    public void update() {
+    public void removeAll(List<Brick> b) {
+        bricks.removeAll(b);
+    }
 
+    public void update() {
+        for(Brick b : bricks)
+            b.update();
     }
 
     public void draw(SpriteBatch batch) {

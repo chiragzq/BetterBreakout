@@ -19,7 +19,7 @@ android {
     }
     defaultConfig {
         applicationId "com.chirag.betterbreakout"
-        minSdkVersion 9
+        minSdkVersion 20
         targetSdkVersion 20
         versionCode 1
         versionName "1.0"

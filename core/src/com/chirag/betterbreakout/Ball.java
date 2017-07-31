@@ -1,5 +1,6 @@
 package com.chirag.betterbreakout;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,6 +11,7 @@ public class Ball extends Sprite {
     float y;
     float xVel;
     float yVel;
+    boolean isDead;
 
     public Ball(int radius, int x, int y, Texture ballTexture) {
         super(ballTexture);
@@ -18,6 +20,7 @@ public class Ball extends Sprite {
         this.y = y;
         yVel = 0;
         xVel = 0;
+        isDead = false;
 
         setCenter(x,y);
         setSize(radius*2, radius*2);
@@ -47,6 +50,7 @@ public class Ball extends Sprite {
         if(y-radius < 0) {
             y = radius;
             yVel *= -1;
+            isDead = true;
         }
         if(y+radius > BetterBreakout.GAME_HEIGHT) {
             y = BetterBreakout.GAME_HEIGHT - radius;
@@ -54,31 +58,14 @@ public class Ball extends Sprite {
         }
     }
 
-    public void setDirection(int dir, int vel) {
-        switch(dir) {
-            case 0:case 360:
-                yVel = 0;
-                xVel = -vel;
-                break;
-            case 180:
-                yVel = 0;
-                xVel = vel;
-                break;
-            case 90:
-                yVel = vel;
-                xVel = 0;
-                break;
-            case 270:
-                yVel = -vel;
-                xVel = 0;
-                break;
-            default:
-                xVel = (float)Math.cos((360 - dir) % 90) * vel * (dir - 90 < 180 ? 1 : -1);
-                yVel = (float)Math.sin((360 - dir) % 90) * vel * (dir < 180 ? 1 : -1);
-        }
+    public void setDirection(float dir, float vel) {
+        xVel = (float)Math.cos(dir * Math.PI / 180f ) * vel;
+        yVel = (float)Math.sin(dir * Math.PI / 180f) * vel;
+        setOriginCenter();
+        setRotation(dir);
     }
 
     public void launch() {
-        setDirection((int)(Math.random() * 180 - 1), 10);
+        setDirection((int)(Math.random() * 160 - 1) + 10, 10);
     }
 }
