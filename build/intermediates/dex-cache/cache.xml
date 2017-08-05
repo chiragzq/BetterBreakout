@@ -2,40 +2,31 @@
 <items version="2" >
 
     <item
-        is-multidex="true"
+        is-multidex="false"
         jar="/home/spafindoople/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-android/1.9.6/57c2831c870743712b808384187ea856e541878f/gdx-backend-android-1.9.6.jar"
-        jumboMode="true"
+        jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="57c2831c870743712b808384187ea856e541878f">
-        <dex dex="/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/transforms/dex/debug/folders/1000/10/gdx-backend-android-1.9.6_4449161a448f0025eb9574e1e42bc2b29eb740be/classes.dex" />
+        <dex dex="/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/pre-dexed/debug/gdx-backend-android-1.9.6_4449161a448f0025eb9574e1e42bc2b29eb740be.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="/home/spafindoople/Downloads/BetterBreakout/core/build/libs/core-1.0.jar"
+        jumboMode="false"
         optimize="true"
         revision="25.0.2"
-        sha1="42ff79ba6bd1c7fc0ad66c598b2dd90b29dee8e7">
-        <dex dex="/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_66cccb0b7f867f4d668368f588a6c46cdf52c18b/classes.dex" />
+        sha1="8601f486079a03ed723c2c3ee6f7cffc61e29deb">
+        <dex dex="/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/pre-dexed/debug/core-1.0_baa11e7fd800547f5fa5f655c0e8403fab4b297a.jar" />
     </item>
     <item
-        is-multidex="true"
+        is-multidex="false"
         jar="/home/spafindoople/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.6/47d1e9b890e364ec28f128e9bb3b9a12a94c164/gdx-1.9.6.jar"
-        jumboMode="true"
+        jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="047d1e9b890e364ec28f128e9bb3b9a12a94c164">
-        <dex dex="/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/transforms/dex/debug/folders/1000/10/gdx-1.9.6_ccc6187cfb9091a24d38c85adc9576df811bec36/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="2cf3860fa9783c9127e613615b3aded0eedae4f1">
-        <dex dex="/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_c67b6570e937a0e1810fb601a2c88c4993739231/classes.dex" />
+        <dex dex="/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/pre-dexed/debug/gdx-1.9.6_ccc6187cfb9091a24d38c85adc9576df811bec36.jar" />
     </item>
 
 </items>

@@ -17,10 +17,9 @@ public class BetterBreakout extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-		game = new Game(new Texture("brick.png"));
+		game = new Game(new Texture("brick.png"), new Texture("power.png"));
 		batch = new SpriteBatch();
 		bitmapFont = new BitmapFont(Gdx.files.internal("font.fnt"));
-		img = new Texture("brick.png");
 	}
 
 	@Override

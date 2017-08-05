@@ -13,17 +13,21 @@ public class Game {
     int lives;
     int score;
     Texture brickTexture;
+    Texture powerTexture;
     Paddle paddle;
     BrickPattern bricks;
     List<Ball> balls;
+    List<Powerup> powerups;
 
-    public Game(Texture brickTexture) {
+    public Game(Texture brickTexture, Texture powerTexture) {
+        this.powerTexture = powerTexture;
         this.brickTexture = brickTexture;
         bricks = new BrickPattern(brickTexture);
         bricks.generateGrid(15, 10, 10);
         balls = new ArrayList<Ball>();
         balls.add(new Ball(15, 960, 110, brickTexture));
         paddle = new Paddle(120,20, 100, brickTexture);
+        powerups = new ArrayList<Powerup>();
         score = 0;
     }
 
@@ -44,6 +48,13 @@ public class Game {
                         ball.x -= ball.xVel;
                         ball.xVel *= -1;
                         brick.gotHit();
+                        powerups.add(new Powerup(
+                                Powerup.Power.ADDBALL,
+                                powerTexture,
+                                (int)brick.getX(),
+                                (int)brick.getY(),
+                                50,
+                                50));
                         score++;
                         break;
                     case TOP: case BOTTOM:
@@ -82,9 +93,12 @@ public class Game {
         bricks.removeAll(toDelBrick);
         balls.removeAll(toDelBall);
         if(balls.isEmpty()) {
-            int[] i = new int[3];
-            System.out.println(i[4]);
+            stackOverFlow();
+            //throw new NullPointerException("YOU LOST. YOU ARE A FAILURE IN LIFE");
         }
+    }
+    public void stackOverFlow() {
+        stackOverFlow();
     }
 
     public void draw(BitmapFont bitmapFont, SpriteBatch batch) {
