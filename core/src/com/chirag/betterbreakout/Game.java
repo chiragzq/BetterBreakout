@@ -2,6 +2,7 @@ package com.chirag.betterbreakout;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -36,6 +37,22 @@ public class Game {
         paddle.update();
         List<Brick> toDelBrick = new ArrayList<Brick>();
         List<Ball> toDelBall = new ArrayList<Ball>();
+        List<Powerup> toDelPowerup = new ArrayList<Powerup>();
+        for(Powerup p : powerups) {
+            p.update();
+            if(isColliding(paddle, p)) {
+                toDelPowerup.add(p);
+                if(p.power == Powerup.Power.ADDBALL) {
+                    Ball b = new Ball(15, 960, 110, brickTexture);
+                    balls.add(b);
+                    b.launch((int)(paddle.getX() + paddle.getWidth()/2));
+                } else if(p.power == Powerup.Power.LARGEPADDLE) {
+                    paddle.setSize(180, 10000);
+                } else {
+                    paddle.setSize(90, 10000);
+                }
+            }
+        }
         for(Ball ball : balls) {
             ball.update();
             if(ball.isDead) toDelBall.add(ball);
@@ -48,13 +65,15 @@ public class Game {
                         ball.x -= ball.xVel;
                         ball.xVel *= -1;
                         brick.gotHit();
-                        powerups.add(new Powerup(
-                                Powerup.Power.ADDBALL,
-                                powerTexture,
-                                (int)brick.getX(),
-                                (int)brick.getY(),
-                                50,
-                                50));
+                        if(Math.random() > 0.9) {
+                            powerups.add(new Powerup(
+                                    Powerup.Power.RANDOM,
+                                    powerTexture,
+                                    (int) brick.getX(),
+                                    (int) brick.getY(),
+                                    20,
+                                    20));
+                        }
                         score++;
                         break;
                     case TOP: case BOTTOM:
@@ -62,6 +81,15 @@ public class Game {
                         ball.y -= ball.yVel;
                         ball.yVel *= -1;
                         brick.gotHit();
+                        if(Math.random() > 0.9) {
+                            powerups.add(new Powerup(
+                                    Powerup.Power.RANDOM,
+                                    powerTexture,
+                                    (int) brick.getX(),
+                                    (int) brick.getY(),
+                                    20,
+                                    20));
+                        }
                         score++;
                         break;
                 }
@@ -92,6 +120,7 @@ public class Game {
         }
         bricks.removeAll(toDelBrick);
         balls.removeAll(toDelBall);
+        powerups.removeAll(toDelPowerup);
         if(balls.isEmpty()) {
             stackOverFlow();
             //throw new NullPointerException("YOU LOST. YOU ARE A FAILURE IN LIFE");
@@ -107,6 +136,8 @@ public class Game {
         for(Ball ball : balls) {
             ball.draw(batch);
         }
+        for(Powerup p : powerups)
+            p.draw(batch);
         bitmapFont.draw(batch, "Score: " + score, 0, BetterBreakout.GAME_HEIGHT);
     }
     public void reset() {
@@ -119,6 +150,17 @@ public class Game {
 
     public enum Side {
         TOP, BOTTOM, LEFT, RIGHT, NONE
+    }
+
+
+    public boolean isColliding(Sprite s1, Sprite s2) {
+        float xDis = Math.abs((s1.getX() + s1.getWidth()/2) - (s2.getX() + s2.getWidth()/2));
+        float yDis = Math.abs((s1.getY() + s1.getWidth()/2) - (s2.getY() + s2.getHeight()/2));
+
+        float avgWidth = (s1.getWidth() + s2.getWidth())/2;
+        float avgHeight = (s1.getHeight() + s2.getHeight())/2;
+
+        return xDis < avgWidth && yDis < avgHeight;
     }
 
     /**

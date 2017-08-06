@@ -24,7 +24,7 @@ public class Ball extends Sprite {
 
         setCenter(x,y);
         setSize(radius*2, radius*2);
-        launch();
+        launch(BetterBreakout.GAME_WIDTH/2);
     }
 
     public void update() {
@@ -65,7 +65,8 @@ public class Ball extends Sprite {
         setRotation(dir);
     }
 
-    public void launch() {
+    public void launch(int x) {
         setDirection((int)(Math.random() * 160 - 1) + 10, 10);
+        setCenterX(x);
     }
 }

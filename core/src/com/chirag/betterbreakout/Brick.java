@@ -17,7 +17,7 @@ public class Brick extends Sprite {
 
     public void gotHit() {
         time = System.currentTimeMillis() + 200;
-        setColor(getColor().mul(1.5f));
+        setColor(getColor().mul(0.75f));
     }
 
     public Brick(Texture brickTexture, int x, int y, int width, int height, Color color) {
