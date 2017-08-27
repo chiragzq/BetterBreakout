@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class BetterBreakout extends ApplicationAdapter {
 	SpriteBatch batch;
-	Texture img;
 	Game game;
 	BitmapFont bitmapFont;
 	static final int GAME_WIDTH = 1920;
@@ -39,7 +38,6 @@ public class BetterBreakout extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
 		bitmapFont.dispose();
 	}
 }

@@ -9,17 +9,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BrickPattern {
-    List<Brick> bricks;
-    Texture brickTexture;
-    public static final int TOP_PADDING = 120;
-    final Color[] rainbow = {Color.RED, Color.ORANGE, Color.GOLD, Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.PURPLE, Color.PINK, Color.WHITE};
+    private Texture mBrickTexture;
+    private List<Brick> mBricks;
 
-    public BrickPattern(Texture brickTexture) {
-        bricks = new ArrayList<Brick>();
-        this.brickTexture = brickTexture;
+    private static final int TOP_PADDING = 120;
+    private final Color[] RAINBOW = {Color.RED, Color.ORANGE, Color.GOLD, Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.PURPLE, Color.PINK, Color.WHITE};
+
+    BrickPattern(Texture brickTexture) {
+        mBricks = new ArrayList<Brick>();
+        this.mBrickTexture = brickTexture;
     }
 
-    public void generateGrid(int widthBricks, int heightBricks, int padding) {
+    List<Brick> getBricks() {
+        return mBricks;
+    }
+
+    void update() {
+        for(Brick b : mBricks)
+            b.update();
+    }
+
+    void draw(SpriteBatch batch) {
+        for(Brick b : mBricks) {
+            b.draw(batch);
+        }
+    }
+
+    private void add(int x, int y, int width, int height, Color color) {
+        mBricks.add(new Brick(mBrickTexture, x, y, width, height, color));
+    }
+
+    public void remove(Brick b) {
+        mBricks.remove(b);
+    }
+
+    void removeAll(List<Brick> b) {
+        mBricks.removeAll(b);
+    }
+
+    void generateGrid(int widthBricks, int heightBricks, int padding) {
         int sidePadding = (BetterBreakout.GAME_WIDTH - Brick.WIDTH * widthBricks + (widthBricks-1) * padding) / 2;
         int height = Brick.HEIGHT * heightBricks + (heightBricks-1) * padding;
 
@@ -29,33 +57,10 @@ public class BrickPattern {
             for(int j = BetterBreakout.GAME_HEIGHT - TOP_PADDING;
                 j >= BetterBreakout.GAME_HEIGHT - TOP_PADDING - height;
                 j -= Brick.HEIGHT + padding) {
-                Color c = rainbow[(BetterBreakout.GAME_HEIGHT - TOP_PADDING - j)/(Brick.HEIGHT+padding)];
+                Color c = RAINBOW[(BetterBreakout.GAME_HEIGHT - TOP_PADDING - j)/(Brick.HEIGHT+padding)];
                 add(i, j , Brick.WIDTH, Brick.HEIGHT, c);
             }
         }
 
-    }
-
-    public void add(int x, int y, int width, int height, Color color) {
-        bricks.add(new Brick(brickTexture, x, y, width, height, color));
-    }
-
-    public void remove(Brick b) {
-        bricks.remove(b);
-    }
-
-    public void removeAll(List<Brick> b) {
-        bricks.removeAll(b);
-    }
-
-    public void update() {
-        for(Brick b : bricks)
-            b.update();
-    }
-
-    public void draw(SpriteBatch batch) {
-        for(Brick b : bricks) {
-            b.draw(batch);
-        }
     }
 }

@@ -16,7 +16,7 @@
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
-        sha1="8601f486079a03ed723c2c3ee6f7cffc61e29deb">
+        sha1="4eda8c23af56bd03a65069b63673af00c537b51e">
         <dex dex="/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/pre-dexed/debug/core-1.0_baa11e7fd800547f5fa5f655c0e8403fab4b297a.jar" />
     </item>
     <item
