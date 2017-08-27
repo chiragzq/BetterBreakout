@@ -5,32 +5,41 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 class Paddle implements Rectangular{
     public enum State {
         NORMAL, LARGE, SMALL
     }
 
+    private static Map<State, Integer> WIDTHS;
+    private static final int HEIGHT = 30;
+
+    static {
+        WIDTHS = new HashMap<State, Integer>();
+        WIDTHS.put(State.NORMAL, 100);
+        WIDTHS.put(State.SMALL, 50);
+        WIDTHS.put(State.LARGE, 800);
+    }
+
     private float mX;
     private long mPowerUpEndTime;
-    private float mDefaultWidth;
     private State mState;
     private Sprite mSprite;
     private float mY;
     private float mWidth;
-    private float mHeight;
 
-    Paddle(Texture paddleTexture, float x, float y, float width, float height) {
-        mSprite = new Sprite(paddleTexture);
-        mSprite.setBounds(0, y, width, height);
-
+    Paddle(Texture paddleTexture, float x, float y) {
         mX = x;
         mY = y;
-        mWidth = width;
-        mHeight = height;
+        mWidth = WIDTHS.get(State.NORMAL);
 
         mState = State.NORMAL;
-        mDefaultWidth = width;
+
+        mSprite = new Sprite(paddleTexture);
+        mSprite.setBounds(0, y, WIDTHS.get(State.NORMAL), 20);
     }
 
     @Override
@@ -50,7 +59,7 @@ class Paddle implements Rectangular{
 
     @Override
     public float getHeight() {
-        return mHeight;
+        return HEIGHT;
     }
 
     Sprite getSprite() {
@@ -63,6 +72,7 @@ class Paddle implements Rectangular{
         if(mState != State.NORMAL) {
             if(mPowerUpEndTime < System.currentTimeMillis()) {
                 mState = State.NORMAL;
+                setState(State.NORMAL, 0);
                 mSprite.setCenter(mX, mY);
             }
         }
@@ -70,24 +80,22 @@ class Paddle implements Rectangular{
 
     void draw(SpriteBatch batch) {
         mSprite.setCenter(mX, mY);
-        mSprite.setSize(mWidth, mHeight);
+        mSprite.setSize(mWidth, HEIGHT);
         mSprite.draw(batch);
     }
 
     /**
      * Changes with width of the paddle for a duration
-     * @param width how big the paddle should become
+     * @param state THE STATE
      * @param duration the duration (in millis) that it should stay
      */
-    void setSize(int width, int duration) {
-        if(width < mDefaultWidth) {
-            mState = State.SMALL;
-        } else if(width > mDefaultWidth) {
-            mState = State.LARGE;
-        }
+    void setState(State state, int duration) {
+        mState = state;
 
-        mWidth = width;
+        mWidth = WIDTHS.get(state);
         mPowerUpEndTime = System.currentTimeMillis() + duration;
         mX = Gdx.input.getX();
+        mSprite.setBounds(mX, mY, mWidth, HEIGHT);
+
     }
 }

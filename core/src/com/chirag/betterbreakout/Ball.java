@@ -123,9 +123,14 @@ class Ball implements DeleteableGameElement{
             mY = BetterBreakout.GAME_HEIGHT - mRadius;
             mYVel *= -1;
         }
+        updateAngle();
     }
 
-
+     void updateAngle() {
+        float dir = (float)(Math.atan2(mYVel, mXVel) * 180.0 / Math.PI);
+        mSprite.setOriginCenter();
+        mSprite.setRotation(dir);
+    }
 
 
 }

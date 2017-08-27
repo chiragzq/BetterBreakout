@@ -1,12 +1,13 @@
-package com.chirag.betterbreakout;
+package com.chirag.betterbreakout.powerup;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.chirag.betterbreakout.DeleteableGameElement;
 
-class PowerUp implements DeleteableGameElement{
+public class PowerUp implements DeleteableGameElement {
     public enum Power {
-        ADDBALL, LARGEPADDLE, SMALLPADDLE, RANDOM
+        ADDBALL, LARGEPADDLE, SMALLPADDLE, ROCKET, BOMB, SHOTGUN, RANDOM
     }
 
     private Power mPower;
@@ -15,7 +16,7 @@ class PowerUp implements DeleteableGameElement{
     private float mY;
     private boolean mIsDead;
 
-    PowerUp(Power power, Texture texture, int x, int y, int width, int height) {
+    public PowerUp(Power power, Texture texture, int x, int y, int width, int height) {
         mSprite = new Sprite(texture);
         mSprite.setBounds(x, y, width, height);
         mIsDead = false;
@@ -41,11 +42,11 @@ class PowerUp implements DeleteableGameElement{
     }
 
     //Getters
-    Power getPower() {
+    public Power getPower() {
         return mPower;
     }
 
-    Sprite getSprite() {
+    public Sprite getSprite() {
         mSprite.setCenter(mX, mY);
         return mSprite;
     }
@@ -56,14 +57,14 @@ class PowerUp implements DeleteableGameElement{
     //Setters
 
     //Main
-    void update() {
+    public void update() {
         mY -= 2;
         if(mY < 0) {
             mIsDead = true;
         }
     }
 
-    void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch) {
         mSprite.setCenter(mX, mY);
         mSprite.draw(batch);
     }

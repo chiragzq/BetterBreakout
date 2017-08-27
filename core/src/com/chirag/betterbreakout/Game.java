@@ -21,23 +21,31 @@ class Game {
     private BrickPattern bricks;
     private List<Ball> balls;
     private List<PowerUp> powerUps;
+    private List<Bomb> bombs;
 
     Game(Texture brickTexture, Texture powerTexture) {
         this.powerTexture = powerTexture;
         this.brickTexture = brickTexture;
         bricks = new BrickPattern(brickTexture);
         bricks.generateGrid(15, 10, 10);
+
         balls = new ArrayList<Ball>();
         balls.add(new Ball(15, 960, 110, brickTexture));
-        paddle = new Paddle(brickTexture, 120,80, 100, 20);
+
+        bombs = new ArrayList<Bomb>();
+
+        paddle = new Paddle(brickTexture, 120,80);
+
         powerUps = new ArrayList<PowerUp>();
+
         score = 0;
     }
 
     void update() {
         bricks.update();
         paddle.update();
-
+        
+        List<DeleteableGameElement> toDelete = new ArrayList<DeleteableGameElement>();
         List<Brick> toDelBrick = new ArrayList<Brick>();
         List<Ball> toDelBall = new ArrayList<Ball>();
         List<PowerUp> toDelPowerUp = new ArrayList<PowerUp>();
@@ -156,10 +164,10 @@ class Game {
                 b.launch(Gdx.input.getX());
                 break;
             case LARGEPADDLE:
-                paddle.setSize(180, 10000);
+                paddle.setState(Paddle.State.LARGE, 8000);
                 break;
             case SMALLPADDLE:
-                paddle.setSize(60, 10000);
+                paddle.setState(Paddle.State.SMALL, 8000);
                 break;
         }
     }
@@ -171,7 +179,7 @@ class Game {
                 ball.stepBack();
                 ball.reverseX();
                 brick.gotHit();
-                if(Math.random() > 0.9) {
+                if(Math.random() > 0.4) {
                     powerUps.add(new PowerUp(
                             PowerUp.Power.RANDOM,
                             powerTexture,
@@ -181,12 +189,13 @@ class Game {
                             20));
                 }
                 score++;
+                ball.updateAngle();
                 break;
             case TOP: case BOTTOM:
                 ball.stepBack();
                 ball.reverseY();
                 brick.gotHit();
-                if(Math.random() > 0.9) {
+                if(Math.random() > 0.4) {
                     powerUps.add(new PowerUp(
                             PowerUp.Power.RANDOM,
                             powerTexture,
@@ -196,6 +205,7 @@ class Game {
                             20));
                 }
                 score++;
+                ball.updateAngle();
                 break;
         }
     }
