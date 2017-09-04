@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.chirag.betterbreakout.powerup.Laser;
+import com.chirag.betterbreakout.powerup.PowerUp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,7 @@ class Game {
     private BrickPattern bricks;
     private List<Ball> balls;
     private List<PowerUp> powerUps;
-    private List<Bomb> bombs;
+    private List<Laser> lasers;
 
     Game(Texture brickTexture, Texture powerTexture) {
         this.powerTexture = powerTexture;
@@ -32,7 +34,7 @@ class Game {
         balls = new ArrayList<Ball>();
         balls.add(new Ball(15, 960, 110, brickTexture));
 
-        bombs = new ArrayList<Bomb>();
+        lasers = new ArrayList<Laser>();
 
         paddle = new Paddle(brickTexture, 120,80);
 
@@ -44,11 +46,15 @@ class Game {
     void update() {
         bricks.update();
         paddle.update();
-        
-        List<DeleteableGameElement> toDelete = new ArrayList<DeleteableGameElement>();
+
+        for(Laser r : lasers) {
+            r.update();
+        }
+
         List<Brick> toDelBrick = new ArrayList<Brick>();
         List<Ball> toDelBall = new ArrayList<Ball>();
         List<PowerUp> toDelPowerUp = new ArrayList<PowerUp>();
+        List<Laser> toDelLaser = new ArrayList<Laser>();
 
         for(PowerUp p : powerUps) {
             p.update();
@@ -57,6 +63,19 @@ class Game {
                 toDelPowerUp.add(p);
             }
         }
+
+        for(Laser laser : lasers) {
+            if(laser.isDead()) {
+                for(Brick b : bricks.getBricks()) {
+                    if(Math.abs(b.getX() - laser.getX()) < 40) {
+                        toDelBrick.add(b);
+                    }
+                }
+                toDelLaser.add(laser);
+            }
+        }
+        bricks.removeAll(toDelBrick);
+        toDelBrick = new ArrayList<Brick>();
 
         for(Ball ball : balls) {
             ball.update();
@@ -98,19 +117,25 @@ class Game {
         bricks.removeAll(toDelBrick);
         balls.removeAll(toDelBall);
         powerUps.removeAll(toDelPowerUp);
+        lasers.removeAll(toDelLaser);
         if(balls.isEmpty()) {
-            lose();
+
         }
     }
 
     void draw(BitmapFont bitmapFont, SpriteBatch batch) {
         bricks.draw(batch);
         paddle.draw(batch);
+        for(Laser r : lasers) {
+            r.draw(batch);
+        }
         for(Ball ball : balls) {
             ball.draw(batch);
         }
-        for(PowerUp p : powerUps)
+        for(PowerUp p : powerUps) {
             p.draw(batch);
+        }
+
         bitmapFont.draw(batch, "Score: " + score, 0, BetterBreakout.GAME_HEIGHT);
     }
 
@@ -169,45 +194,38 @@ class Game {
             case SMALLPADDLE:
                 paddle.setState(Paddle.State.SMALL, 8000);
                 break;
+            case ROCKET:
+                lasers.add(new Laser(brickTexture, paddle.getX()));
+                lasers.get(lasers.size()-1).activate();
         }
     }
 
     private void doBallBrickCollision(Ball ball, Brick brick) {
         Side colSide = getCollisionSide(ball, brick);
         switch(colSide) {
-            case LEFT: case RIGHT:
-                ball.stepBack();
+            case LEFT:
+            case RIGHT:
                 ball.reverseX();
-                brick.gotHit();
-                if(Math.random() > 0.4) {
-                    powerUps.add(new PowerUp(
-                            PowerUp.Power.RANDOM,
-                            powerTexture,
-                            (int) brick.getX(),
-                            (int) brick.getY(),
-                            20,
-                            20));
-                }
-                score++;
-                ball.updateAngle();
                 break;
-            case TOP: case BOTTOM:
-                ball.stepBack();
+            case TOP:
+            case BOTTOM:
                 ball.reverseY();
-                brick.gotHit();
-                if(Math.random() > 0.4) {
-                    powerUps.add(new PowerUp(
-                            PowerUp.Power.RANDOM,
-                            powerTexture,
-                            (int) brick.getX(),
-                            (int) brick.getY(),
-                            20,
-                            20));
-                }
-                score++;
-                ball.updateAngle();
                 break;
         }
+
+        ball.stepBack();
+        brick.gotHit();
+        if(Math.random() > 0.4) {
+            powerUps.add(new PowerUp(
+                    PowerUp.Power.RANDOM,
+                    powerTexture,
+                    (int) brick.getX(),
+                    (int) brick.getY(),
+                    20,
+                    20));
+        }
+        score++;
+        ball.updateAngle();
     }
 
     private void lose() {

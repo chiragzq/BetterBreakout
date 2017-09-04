@@ -26,15 +26,18 @@ public class PowerUp implements DeleteableGameElement {
         if(power != Power.RANDOM) {
             this.mPower = power;
         } else {
-            switch((int) (Math.random() * 3)) {
+            switch((int) (Math.random() * 4)) {
                 case 0:
-                    this.mPower = Power.ADDBALL;
+                    mPower = Power.ADDBALL;
                     break;
                 case 1:
-                    this.mPower = Power.LARGEPADDLE;
+                    mPower = Power.LARGEPADDLE;
                     break;
                 case 2:
-                    this.mPower = Power.SMALLPADDLE;
+                    mPower = Power.SMALLPADDLE;
+                    break;
+                case 3:
+                    mPower = Power.ROCKET;
                     break;
             }
         }

@@ -11,8 +11,8 @@ public class BetterBreakout extends ApplicationAdapter {
 	SpriteBatch batch;
 	Game game;
 	BitmapFont bitmapFont;
-	static final int GAME_WIDTH = 1920;
-	static final int GAME_HEIGHT = 1080;
+	public static final int GAME_WIDTH = 1920;
+	public static final int GAME_HEIGHT = 1080;
 
 	@Override
 	public void create () {

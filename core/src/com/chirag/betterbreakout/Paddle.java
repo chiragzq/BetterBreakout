@@ -21,7 +21,7 @@ class Paddle implements Rectangular{
         WIDTHS = new HashMap<State, Integer>();
         WIDTHS.put(State.NORMAL, 100);
         WIDTHS.put(State.SMALL, 50);
-        WIDTHS.put(State.LARGE, 800);
+        WIDTHS.put(State.LARGE, 150);
     }
 
     private float mX;
