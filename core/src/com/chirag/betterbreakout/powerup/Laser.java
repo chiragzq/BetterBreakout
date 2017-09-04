@@ -14,6 +14,7 @@ public class Laser implements Rectangular, DeleteableGameElement {
     private float mY;
     private float mWidth;
     private boolean mIsDead;
+    private boolean mIsActive;
     private Sprite mSprite;
     private long activationTimer;
 
@@ -24,6 +25,9 @@ public class Laser implements Rectangular, DeleteableGameElement {
         mWidth = 80;
 
         activationTimer = 0L;
+
+        mIsActive = false;
+        mIsDead = false;
 
         mSprite.setBounds(x, mY, mWidth, HEIGHT);
     }
@@ -41,6 +45,10 @@ public class Laser implements Rectangular, DeleteableGameElement {
         mSprite.setCenter(mX, mY);
         mSprite.setSize(mWidth, HEIGHT);
         mSprite.draw(batch);
+    }
+
+    public void setActive(boolean isActive) {
+        mIsActive = isActive;
     }
 
     public float getHeight() {
@@ -63,7 +71,12 @@ public class Laser implements Rectangular, DeleteableGameElement {
         return mIsDead;
     }
 
+    public boolean isActive() {
+        return mIsActive;
+    }
+
     public void activate() {
         activationTimer = System.currentTimeMillis() + 240;
+        mIsActive = true;
     }
 }
