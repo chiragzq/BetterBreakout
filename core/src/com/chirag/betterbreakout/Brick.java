@@ -15,12 +15,13 @@ class Brick implements DeleteableGameElement, Rectangular {
     private boolean mIsDead;
     private float mX;
     private float mY;
+    private Color mColor;
 
     Brick(Texture brickTexture, int x, int y, int width, int height, Color color) {
         mSprite = new Sprite(brickTexture);
         mSprite.setBounds(x, y, width, height);
         mSprite.setColor(color);
-
+        mColor = color;
         mX = x;
         mY = y;
         mTime = Long.MAX_VALUE;
@@ -51,7 +52,15 @@ class Brick implements DeleteableGameElement, Rectangular {
     public float getHeight() {
         return HEIGHT;
     }
+
+    public Color getColor() {
+        return mColor;
+    }
+
     //Setters
+    public void setDead(boolean isDead) {
+        mIsDead = isDead;
+    }
 
     //Main
     void update() {

@@ -45,6 +45,10 @@ public class PowerUp implements DeleteableGameElement {
     }
 
     //Getters
+    public float getX() {
+        return mX;
+    }
+
     public Power getPower() {
         return mPower;
     }
@@ -53,6 +57,7 @@ public class PowerUp implements DeleteableGameElement {
         mSprite.setCenter(mX, mY);
         return mSprite;
     }
+
     public boolean isDead() {
         return mIsDead;
     }

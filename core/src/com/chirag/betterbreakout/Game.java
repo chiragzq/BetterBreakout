@@ -12,7 +12,7 @@ import com.chirag.betterbreakout.powerup.PowerUp;
 import java.util.ArrayList;
 import java.util.List;
 
-class Game {
+public class Game {
     public enum Side {
         TOP, BOTTOM, LEFT, RIGHT, NONE
     }
@@ -62,7 +62,7 @@ class Game {
         }
 
         for(Explosion explosion : explosions) {
-            explosion.update();
+            explosion.update(paddle);
             if(explosion.isDead()) {
                 toDelExplosion.add(explosion);
             }
@@ -82,7 +82,7 @@ class Game {
             if(laser.isActive()) {
                 for(Brick b : bricks.getBricks()) {
                     if(Math.abs(b.getX() - laser.getX()) < 51) {
-                        toDelBrick.add(b);
+                        b.setDead(true);
                     }
                 }
                 laser.setActive(false);
@@ -102,6 +102,7 @@ class Game {
             }
             for(Brick brick : bricks.getBricks()) {
                 if(brick.isDead()) {
+                    explosions.add(new Explosion(brick.getX(), brick.getY(), brick.getColor()));
                     toDelBrick.add(brick);
                 }
                 doBallBrickCollision(ball, brick);
@@ -116,7 +117,7 @@ class Game {
                     ball.stepBack();
                     break;
                 case TOP:
-                    float xdif = paddle.getX() + paddle.getWidth()/2 - ball.getX() + ball.getDiameter();
+                    float xdif = paddle.getX() + paddle.getWidth()/2 - ball.getX() + ball.getWidth();
                     if(xdif < 0) {
                         xdif = 0;
                     }
@@ -176,14 +177,14 @@ class Game {
      * @param rect the one getting hit
      * @return which side on brick was hit by ball
      */
-    private Side getCollisionSide(Ball ball, Rectangular rect) {
+    public static Side getCollisionSide(MovingGameElement ball, Rectangular rect) {
         float xDis = Math.abs((ball.getX()) - (rect.getX()));
         float yDis = Math.abs((ball.getY()) - (rect.getY()));
 
         float xDisOld = Math.abs((ball.getOldX()) - (rect.getX())); //ball center - vel
 
-        float avgWidth = (ball.getDiameter() + Brick.WIDTH)/2;
-        float avgHeight = (ball.getDiameter() + Brick.HEIGHT)/2;
+        float avgWidth = (ball.getWidth() + Brick.WIDTH)/2;
+        float avgHeight = (ball.getHeight() + Brick.HEIGHT)/2;
 
         if(xDis < avgWidth && yDis < avgHeight) {
             if(xDisOld < avgWidth) {
@@ -216,7 +217,7 @@ class Game {
                 paddle.setState(Paddle.State.SMALL, 8000);
                 break;
             case LASER:
-                lasers.add(new Laser(brickTexture, paddle.getX()));
+                lasers.add(new Laser(brickTexture, powerUp.getX()));
                 lasers.get(lasers.size()-1).activate();
         }
     }
@@ -228,8 +229,7 @@ class Game {
                 ball.stepBack();
                 ball.reverseX();
                 brick.gotHit();
-                explosions.add(new Explosion(brick.getX(), brick.getY()));
-                if(Math.random() > 0.8) {
+                if(Math.random() > 0.5) {
                     powerUps.add(new PowerUp(
                             PowerUp.Power.LASER,
                             powerTexture,
@@ -245,8 +245,7 @@ class Game {
                 ball.stepBack();
                 ball.reverseY();
                 brick.gotHit();
-                explosions.add(new Explosion(brick.getX(), brick.getY()));
-                if(Math.random() > 0.8) {
+                if(Math.random() > 0.5) {
                     powerUps.add(new PowerUp(
                             PowerUp.Power.LASER,
                             powerTexture,

@@ -4,57 +4,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-class Ball implements DeleteableGameElement{
-    private Sprite mSprite;
-    private int mRadius;
-    private float mX;
-    private float mY;
-    private float mXVel;
-    private float mYVel;
-    private boolean mIsDead;
+class Ball extends MovingGameElement {
+    private float mRadius;
 
-    Ball(int radius, int x, int y, Texture ballTexture) {
-        mSprite = new Sprite(ballTexture);
+    Ball(float radius, float x, float y, Texture ballTexture) {
+        super(ballTexture, x, y, radius * 2, radius * 2, 0, 0);
         mRadius = radius;
-        mX = x;
-        mY = y;
 
-        mIsDead = false;
-        mSprite.setSize(radius * 2, radius * 2);
         launch(BetterBreakout.GAME_WIDTH / 2);
-    }
-
-    //Getters
-    public boolean isDead() {
-        return mIsDead;
-    }
-
-    float getX() {
-        return mX;
-    }
-
-    float getY() {
-        return mY;
-    }
-
-    float getXVel() {
-        return mXVel;
-    }
-
-    float getYVel() {
-        return mYVel;
-    }
-
-    float getOldX() {
-        return mX - mXVel;
-    }
-
-    float getOldY() {
-        return mY - mYVel;
-    }
-
-    float getDiameter() {
-        return mRadius * 2;
     }
 
     //Setters
@@ -67,14 +24,14 @@ class Ball implements DeleteableGameElement{
     }
 
     //Main
-    void update() {
-        mX += mXVel;
-        mY += mYVel;
+    public void update() {
+        super.update();
         wallCollision();
 
     }
 
-    void draw(SpriteBatch batch) {
+    @Override
+    public void draw(SpriteBatch batch) {
         mSprite.setCenter(mX, mY);
         mSprite.draw(batch);
     }
@@ -90,19 +47,6 @@ class Ball implements DeleteableGameElement{
     void launch(int x) {
         setDirection((int) (Math.random() * 160 - 1) + 10, 10);
         mX = x;
-    }
-
-    void stepBack() {
-        mX -= mXVel;
-        mY -= mYVel;
-    }
-
-    void reverseX() {
-        mXVel *= -1;
-    }
-
-    void reverseY() {
-        mYVel *= -1;
     }
 
     private void wallCollision() {
