@@ -11,12 +11,16 @@ public class Bullet implements DeleteableGameElement, Rectangular {
 
     private float mX;
     private float mY;
+    private float mXVel;
+    private float mYVel;
     private boolean mIsDead;
     private Sprite mSprite;
 
     public Bullet(Texture texture, int x, int y) {
         mSprite = new Sprite(texture);
 
+        mXVel = 0;
+        mYVel = 0;
         mX = x;
         mY = y;
         mIsDead = false;

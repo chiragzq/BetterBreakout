@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.chirag.betterbreakout.powerup.Explosion;
 import com.chirag.betterbreakout.powerup.Laser;
 import com.chirag.betterbreakout.powerup.PowerUp;
 
@@ -24,6 +25,7 @@ class Game {
     private List<Ball> balls;
     private List<PowerUp> powerUps;
     private List<Laser> lasers;
+    private List<Explosion> explosions;
 
     Game(Texture brickTexture, Texture powerTexture) {
         this.powerTexture = powerTexture;
@@ -40,10 +42,18 @@ class Game {
 
         powerUps = new ArrayList<PowerUp>();
 
+        explosions = new ArrayList<Explosion>();
+
         score = 0;
     }
 
     void update() {
+        List<Brick> toDelBrick = new ArrayList<Brick>();
+        List<Ball> toDelBall = new ArrayList<Ball>();
+        List<PowerUp> toDelPowerUp = new ArrayList<PowerUp>();
+        List<Laser> toDelLaser = new ArrayList<Laser>();
+        List<Explosion> toDelExplosion = new ArrayList<Explosion>();
+
         bricks.update();
         paddle.update();
 
@@ -51,10 +61,14 @@ class Game {
             r.update();
         }
 
-        List<Brick> toDelBrick = new ArrayList<Brick>();
-        List<Ball> toDelBall = new ArrayList<Ball>();
-        List<PowerUp> toDelPowerUp = new ArrayList<PowerUp>();
-        List<Laser> toDelLaser = new ArrayList<Laser>();
+        for(Explosion explosion : explosions) {
+            explosion.update();
+            if(explosion.isDead()) {
+                toDelExplosion.add(explosion);
+            }
+        }
+
+
 
         for(PowerUp p : powerUps) {
             p.update();
@@ -69,9 +83,6 @@ class Game {
                 for(Brick b : bricks.getBricks()) {
                     if(Math.abs(b.getX() - laser.getX()) < 51) {
                         toDelBrick.add(b);
-                    } else {
-                        if(Math.abs(b.getX() - laser.getX()) < 100) {
-                        }
                     }
                 }
                 laser.setActive(false);
@@ -112,7 +123,7 @@ class Game {
                     if(xdif > paddle.getWidth()) {
                         xdif = paddle.getWidth();
                     }
-                    float angle = (xdif * 160 / paddle.getWidth()) + 10;
+                    float angle = (xdif * 120 / paddle.getWidth());
                     ball.stepBack();
                     ball.setDirection((int)angle, 10);
 
@@ -124,6 +135,7 @@ class Game {
         balls.removeAll(toDelBall);
         powerUps.removeAll(toDelPowerUp);
         lasers.removeAll(toDelLaser);
+        explosions.removeAll(toDelExplosion);
         if(balls.isEmpty()) {
 
         }
@@ -141,8 +153,11 @@ class Game {
         for(PowerUp p : powerUps) {
             p.draw(batch);
         }
+        for(Explosion explosion : explosions) {
+            explosion.draw(batch);
+        }
 
-        bitmapFont.draw(batch, "Score: " + score, 0, BetterBreakout.GAME_HEIGHT);
+        bitmapFont.draw(batch, "Score: " + score, 0, BetterBreakout.GAME_HEIGHT - 2);
     }
 
     private boolean isColliding(Sprite s1, Sprite s2) {
@@ -213,6 +228,7 @@ class Game {
                 ball.stepBack();
                 ball.reverseX();
                 brick.gotHit();
+                explosions.add(new Explosion(brick.getX(), brick.getY()));
                 if(Math.random() > 0.8) {
                     powerUps.add(new PowerUp(
                             PowerUp.Power.LASER,
@@ -229,6 +245,7 @@ class Game {
                 ball.stepBack();
                 ball.reverseY();
                 brick.gotHit();
+                explosions.add(new Explosion(brick.getX(), brick.getY()));
                 if(Math.random() > 0.8) {
                     powerUps.add(new PowerUp(
                             PowerUp.Power.LASER,

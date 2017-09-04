@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.chirag.betterbreakout.powerup.Particle;
 
 public class BetterBreakout extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -16,6 +17,7 @@ public class BetterBreakout extends ApplicationAdapter {
 
 	@Override
 	public void create () {
+		Particle.loadAllTextures();
 		game = new Game(new Texture("brick.png"), new Texture("power.png"));
 		batch = new SpriteBatch();
 		bitmapFont = new BitmapFont(Gdx.files.internal("font.fnt"));
