@@ -2,54 +2,66 @@ package com.chirag.betterbreakout.powerup;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.chirag.betterbreakout.BetterBreakout;
 import com.chirag.betterbreakout.DeleteableGameElement;
+import com.chirag.betterbreakout.MovingGameElement;
 import com.chirag.betterbreakout.Rectangular;
 
-public class Bullet implements DeleteableGameElement, Rectangular {
-    private final float WIDTH = 10;
-    private final float HEIGHT = 10;
+public class Bullet extends MovingGameElement implements DeleteableGameElement, Rectangular {
 
-    private float mX;
-    private float mY;
-    private float mXVel;
-    private float mYVel;
-    private boolean mIsDead;
-    private Sprite mSprite;
+    public Bullet(Texture texture, float x, float y) {
+        super(texture, x, y, 10, 10, 0, 0);
+        launch(x);
+    }
 
-    public Bullet(Texture texture, int x, int y) {
-        mSprite = new Sprite(texture);
+    public Sprite getSprite() {
+        return mSprite;
+    }
 
-        mXVel = 0;
-        mYVel = 0;
+    @Override
+    public void update() {
+        mX += mXVel;
+        mY += mYVel;
+
+        mSprite.setBounds(mX, mY, mWidth, mHeight);
+        wallCollision();
+    }
+
+    void setDirection(float dir, float vel) {
+        mXVel = (float) Math.cos(dir * Math.PI / 180f) * vel;
+        mYVel = (float) Math.sin(dir * Math.PI / 180f) * vel;
+        mSprite.setOriginCenter();
+        mSprite.setRotation(dir);
+    }
+
+    void launch(float x) {
+        setDirection((int) (Math.random() * 160 - 1) + 10, 10);
         mX = x;
-        mY = y;
-        mIsDead = false;
-
-        mSprite.setBounds(x, y, WIDTH, HEIGHT);
+    }
+    private void wallCollision() {
+        if (mX + mWidth > BetterBreakout.GAME_WIDTH) {
+            mX = BetterBreakout.GAME_WIDTH - mWidth;
+            mXVel *= -1;
+        }
+        if (mX - mWidth < 0) {
+            mX = mWidth;
+            mXVel *= -1;
+        }
+        if (mY - mHeight < 0) {
+            mY = mHeight;
+            mYVel *= -1;
+            mIsDead = true;
+        }
+        if (mY + mHeight > BetterBreakout.GAME_HEIGHT) {
+            mY = BetterBreakout.GAME_HEIGHT - mHeight;
+            mYVel *= -1;
+        }
+        updateAngle();
     }
 
-    @Override
-    public float getX() {
-        return mX;
-    }
-
-    @Override
-    public float getY() {
-        return mY;
-    }
-
-    @Override
-    public float getWidth() {
-        return WIDTH;
-    }
-
-    @Override
-    public float getHeight() {
-        return HEIGHT;
-    }
-
-    @Override
-    public boolean isDead() {
-        return mIsDead;
+    void updateAngle() {
+        float dir = (float)(Math.atan2(mYVel, mXVel) * 180.0 / Math.PI);
+        mSprite.setOriginCenter();
+        mSprite.setRotation(dir);
     }
 }

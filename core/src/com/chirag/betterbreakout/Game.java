@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.chirag.betterbreakout.powerup.Bullet;
 import com.chirag.betterbreakout.powerup.Explosion;
 import com.chirag.betterbreakout.powerup.Laser;
 import com.chirag.betterbreakout.powerup.PowerUp;
@@ -26,6 +27,7 @@ public class Game {
     private List<PowerUp> powerUps;
     private List<Laser> lasers;
     private List<Explosion> explosions;
+    private List<Bullet> bullets;
 
     Game(Texture brickTexture, Texture powerTexture) {
         this.powerTexture = powerTexture;
@@ -44,6 +46,8 @@ public class Game {
 
         explosions = new ArrayList<Explosion>();
 
+        bullets = new ArrayList<Bullet>();
+
         score = 0;
     }
 
@@ -53,12 +57,17 @@ public class Game {
         List<PowerUp> toDelPowerUp = new ArrayList<PowerUp>();
         List<Laser> toDelLaser = new ArrayList<Laser>();
         List<Explosion> toDelExplosion = new ArrayList<Explosion>();
+        List<Bullet> toDelBullet = new ArrayList<Bullet>();
 
         bricks.update();
         paddle.update();
 
         for(Laser r : lasers) {
             r.update();
+        }
+
+        for(Bullet b : bullets) {
+            b.update();
         }
 
         for(Explosion explosion : explosions) {
@@ -93,6 +102,15 @@ public class Game {
         }
         bricks.removeAll(toDelBrick);
         toDelBrick = new ArrayList<Brick>();
+
+        for(Brick b : bricks.getBricks()) {
+            for(Bullet bullet : bullets) {
+                if(isColliding(b.getSprite(), bullet.getSprite())) {
+                    toDelBrick.add(b);
+                    toDelBullet.add(bullet);
+                }
+            }
+        }
 
         for(Ball ball : balls) {
             ball.update();
@@ -132,6 +150,7 @@ public class Game {
 
         }
 
+        bullets.removeAll(toDelBullet);
         bricks.removeAll(toDelBrick);
         balls.removeAll(toDelBall);
         powerUps.removeAll(toDelPowerUp);
@@ -156,6 +175,9 @@ public class Game {
         }
         for(Explosion explosion : explosions) {
             explosion.draw(batch);
+        }
+        for(Bullet b : bullets) {
+            b.draw(batch);
         }
 
         bitmapFont.draw(batch, "Score: " + score, 0, BetterBreakout.GAME_HEIGHT - 2);
@@ -219,6 +241,11 @@ public class Game {
             case LASER:
                 lasers.add(new Laser(brickTexture, powerUp.getX()));
                 lasers.get(lasers.size()-1).activate();
+                break;
+            case SHOTGUN:
+                for(int i = 0;i < 8;i ++) {
+                    bullets.add(new Bullet(brickTexture, paddle.getX(), paddle.getY() + 5));
+                }
         }
     }
 
@@ -229,9 +256,9 @@ public class Game {
                 ball.stepBack();
                 ball.reverseX();
                 brick.gotHit();
-                if(Math.random() > 0.5) {
+                if(Math.random() > 0.4) {
                     powerUps.add(new PowerUp(
-                            PowerUp.Power.LASER,
+                            PowerUp.Power.SHOTGUN,
                             powerTexture,
                             (int) brick.getX(),
                             (int) brick.getY(),
@@ -245,9 +272,9 @@ public class Game {
                 ball.stepBack();
                 ball.reverseY();
                 brick.gotHit();
-                if(Math.random() > 0.5) {
+                if(Math.random() > 0.4) {
                     powerUps.add(new PowerUp(
-                            PowerUp.Power.LASER,
+                            PowerUp.Power.SHOTGUN,
                             powerTexture,
                             (int) brick.getX(),
                             (int) brick.getY(),

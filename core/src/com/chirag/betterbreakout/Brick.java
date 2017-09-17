@@ -53,6 +53,10 @@ class Brick implements DeleteableGameElement, Rectangular {
         return HEIGHT;
     }
 
+    public Sprite getSprite() {
+        return mSprite;
+    }
+
     public Color getColor() {
         return mColor;
     }

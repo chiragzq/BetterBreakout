@@ -6,11 +6,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BrickPattern {
     private Texture mBrickTexture;
     private List<Brick> mBricks;
+    private boolean[] brickStatus;
 
     private static final int TOP_PADDING = 120;
     private final Color[] RAINBOW = {Color.RED, Color.ORANGE, Color.GOLD, Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.PURPLE, Color.PINK, Color.WHITE};
@@ -48,6 +50,8 @@ public class BrickPattern {
     }
 
     void generateGrid(int widthBricks, int heightBricks, int padding) {
+        brickStatus = new boolean[widthBricks * heightBricks];
+
         int sidePadding = (BetterBreakout.GAME_WIDTH - Brick.WIDTH * widthBricks + (widthBricks-1) * padding) / 2;
         int height = Brick.HEIGHT * heightBricks + (heightBricks-1) * padding;
 
