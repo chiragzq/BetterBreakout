@@ -37,8 +37,8 @@ public class BrickPattern {
         }
     }
 
-    private void add(int x, int y, int width, int height, Color color) {
-        mBricks.add(new Brick(mBrickTexture, x, y, width, height, color));
+    private void add(int x, int y, Color color) {
+        mBricks.add(new Brick(mBrickTexture, x, y, color));
     }
 
     public void remove(Brick b) {
@@ -62,7 +62,7 @@ public class BrickPattern {
                 j >= BetterBreakout.GAME_HEIGHT - TOP_PADDING - height;
                 j -= Brick.HEIGHT + padding) {
                 Color c = RAINBOW[(BetterBreakout.GAME_HEIGHT - TOP_PADDING - j)/(Brick.HEIGHT+padding)];
-                add(i, j , Brick.WIDTH, Brick.HEIGHT, c);
+                add(i, j, c);
             }
         }
 

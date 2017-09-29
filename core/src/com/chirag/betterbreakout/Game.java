@@ -3,6 +3,7 @@ package com.chirag.betterbreakout;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.chirag.betterbreakout.powerup.Bullet;
@@ -12,13 +13,16 @@ import com.chirag.betterbreakout.powerup.PowerUp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 public class Game {
     public enum Side {
         TOP, BOTTOM, LEFT, RIGHT, NONE
     }
 
+    private GlyphLayout glyphLayout;
     private int score;
+    private boolean isReset;
     private Texture brickTexture;
     private Texture powerTexture;
     private Paddle paddle;
@@ -40,7 +44,7 @@ public class Game {
 
         lasers = new ArrayList<Laser>();
 
-        paddle = new Paddle(brickTexture, 120,80);
+        paddle = new Paddle(brickTexture, 120, 80);
 
         powerUps = new ArrayList<PowerUp>();
 
@@ -48,7 +52,11 @@ public class Game {
 
         bullets = new ArrayList<Bullet>();
 
+        isReset = false;
+
         score = 0;
+
+        glyphLayout = new GlyphLayout();
     }
 
     void update() {
@@ -76,7 +84,6 @@ public class Game {
                 toDelExplosion.add(explosion);
             }
         }
-
 
 
         for(PowerUp p : powerUps) {
@@ -108,6 +115,7 @@ public class Game {
                 if(isColliding(b.getSprite(), bullet.getSprite())) {
                     toDelBrick.add(b);
                     toDelBullet.add(bullet);
+                    explosions.add(new Explosion(b.getX(),b.getY(),b.getColor()));
                 }
             }
         }
@@ -126,7 +134,8 @@ public class Game {
                 doBallBrickCollision(ball, brick);
             }
             switch(getCollisionSide(ball, paddle)) {
-                case LEFT: case RIGHT:
+                case LEFT:
+                case RIGHT:
                     ball.reverseX();
                     ball.stepBack();
                     break;
@@ -135,7 +144,7 @@ public class Game {
                     ball.stepBack();
                     break;
                 case TOP:
-                    float xdif = paddle.getX() + paddle.getWidth()/2 - ball.getX() + ball.getWidth();
+                    float xdif = paddle.getX() + paddle.getWidth() / 2 - ball.getX() + ball.getWidth();
                     if(xdif < 0) {
                         xdif = 0;
                     }
@@ -144,7 +153,7 @@ public class Game {
                     }
                     float angle = (xdif * 120 / paddle.getWidth());
                     ball.stepBack();
-                    ball.setDirection((int)angle, 10);
+                    ball.setDirection((int) angle, 10);
 
             }
 
@@ -156,8 +165,8 @@ public class Game {
         powerUps.removeAll(toDelPowerUp);
         lasers.removeAll(toDelLaser);
         explosions.removeAll(toDelExplosion);
-        if(balls.isEmpty()) {
-
+        if(balls.isEmpty() && !isReset) {
+            lose();
         }
     }
 
@@ -179,22 +188,33 @@ public class Game {
         for(Bullet b : bullets) {
             b.draw(batch);
         }
-
-        bitmapFont.draw(batch, "Score: " + score, 0, BetterBreakout.GAME_HEIGHT - 2);
+        if(isReset) {
+            glyphLayout.setText(bitmapFont, "You Lose");
+            bitmapFont.draw(
+                    batch,
+                    "You Lose",
+                    (BetterBreakout.GAME_WIDTH - glyphLayout.width) / 2,
+                    BetterBreakout.GAME_HEIGHT/2 + glyphLayout.height
+            );
+        } else {
+            bitmapFont.draw(batch, "Score: " + score, 0, BetterBreakout.GAME_HEIGHT - 2);
+            bitmapFont.draw(batch, "Fuel: " + score, 0, BetterBreakout.GAME_HEIGHT - 50);
+        }
     }
 
     private boolean isColliding(Sprite s1, Sprite s2) {
-        float xDis = Math.abs((s1.getX() + s1.getWidth()/2) - (s2.getX() + s2.getWidth()/2));
-        float yDis = Math.abs((s1.getY() + s1.getWidth()/2) - (s2.getY() + s2.getHeight()/2));
+        float xDis = Math.abs((s1.getX() + s1.getWidth() / 2) - (s2.getX() + s2.getWidth() / 2));
+        float yDis = Math.abs((s1.getY() + s1.getHeight() / 2) - (s2.getY() + s2.getHeight() / 2));
 
-        float avgWidth = (s1.getWidth() + s2.getWidth())/2;
-        float avgHeight = (s1.getHeight() + s2.getHeight())/2;
+        float avgWidth = (s1.getWidth() + s2.getWidth()) / 2;
+        float avgHeight = (s1.getHeight() + s2.getHeight()) / 2;
 
         return xDis < avgWidth && yDis < avgHeight;
     }
 
     /**
      * Returns which side ball hit brick on
+     *
      * @param ball the ball hitting rect2
      * @param rect the one getting hit
      * @return which side on brick was hit by ball
@@ -205,8 +225,8 @@ public class Game {
 
         float xDisOld = Math.abs((ball.getOldX()) - (rect.getX())); //ball center - vel
 
-        float avgWidth = (ball.getWidth() + Brick.WIDTH)/2;
-        float avgHeight = (ball.getHeight() + Brick.HEIGHT)/2;
+        float avgWidth = (ball.getWidth() + Brick.WIDTH) / 2;
+        float avgHeight = (ball.getHeight() + Brick.HEIGHT) / 2;
 
         if(xDis < avgWidth && yDis < avgHeight) {
             if(xDisOld < avgWidth) {
@@ -216,10 +236,10 @@ public class Game {
                 }
                 return Side.TOP;
             } else {
-               if(ball.getXVel() > 0) {
-                   return Side.LEFT;
-               }
-               return Side.RIGHT;
+                if(ball.getXVel() > 0) {
+                    return Side.LEFT;
+                }
+                return Side.RIGHT;
             }
         }
         return Side.NONE;
@@ -240,10 +260,10 @@ public class Game {
                 break;
             case LASER:
                 lasers.add(new Laser(brickTexture, powerUp.getX()));
-                lasers.get(lasers.size()-1).activate();
+                lasers.get(lasers.size() - 1).activate();
                 break;
             case SHOTGUN:
-                for(int i = 0;i < 8;i ++) {
+                for(int i = 0; i < 8; i++) {
                     bullets.add(new Bullet(brickTexture, paddle.getX(), paddle.getY() + 5));
                 }
         }
@@ -252,13 +272,14 @@ public class Game {
     private void doBallBrickCollision(Ball ball, Brick brick) {
         Side colSide = getCollisionSide(ball, brick);
         switch(colSide) {
-            case LEFT: case RIGHT:
+            case LEFT:
+            case RIGHT:
                 ball.stepBack();
                 ball.reverseX();
                 brick.gotHit();
-                if(Math.random() > 0.4) {
+                if(Math.random() > 0.8) {
                     powerUps.add(new PowerUp(
-                            PowerUp.Power.SHOTGUN,
+                            PowerUp.Power.RANDOM,
                             powerTexture,
                             (int) brick.getX(),
                             (int) brick.getY(),
@@ -268,13 +289,14 @@ public class Game {
                 score++;
                 ball.updateAngle();
                 break;
-            case TOP: case BOTTOM:
+            case TOP:
+            case BOTTOM:
                 ball.stepBack();
                 ball.reverseY();
                 brick.gotHit();
-                if(Math.random() > 0.4) {
+                if(Math.random() > 0.8) {
                     powerUps.add(new PowerUp(
-                            PowerUp.Power.SHOTGUN,
+                            PowerUp.Power.RANDOM,
                             powerTexture,
                             (int) brick.getX(),
                             (int) brick.getY(),
@@ -288,6 +310,33 @@ public class Game {
     }
 
     private void lose() {
-        lose();
+        isReset = true;
+        reset();
+        TimeUtil.doLater(new Runnable() {
+            @Override
+            public void run() {
+                isReset = false;
+                start();
+            }
+        }, 8000);
+    }
+
+    void reset() {
+        score = 0;
+        paddle = new Paddle(brickTexture, -2385, -21394);
+        bricks = new BrickPattern(brickTexture);
+        balls = new ArrayList<Ball>();
+        powerUps = new ArrayList<PowerUp>();
+        lasers = new ArrayList<Laser>();
+        explosions = new ArrayList<Explosion>();
+        bullets = new ArrayList<Bullet>();
+    }
+
+    void start() {
+        paddle = new Paddle(brickTexture, 120, 80);
+        bricks.generateGrid(15, 10, 10);
+        balls.add(new Ball(15, 960, 110, brickTexture));
     }
 }
+
+

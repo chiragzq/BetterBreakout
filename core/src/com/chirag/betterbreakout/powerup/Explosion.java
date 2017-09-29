@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Explosion implements DeleteableGameElement {
-    private static final int PARTICLE_NUM = 85;
+    private static final int PARTICLE_NUM = 50;
 
     private ArrayList<Particle> mParticles;
 
