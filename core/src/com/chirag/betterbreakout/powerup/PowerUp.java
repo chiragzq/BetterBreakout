@@ -4,12 +4,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.chirag.betterbreakout.DeleteableGameElement;
+import com.chirag.betterbreakout.Game;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class PowerUp implements DeleteableGameElement {
     public enum Power {
-        ADDBALL, LARGEPADDLE, SMALLPADDLE, LASER, BOMB, SHOTGUN, RANDOM
+        ADDBALL, LARGEPADDLE, SMALLPADDLE, LASER, SHOTGUN, RANDOM, PADDLE_EFFICIENCY
     }
 
+    private static final Power[] POWERS = {Power.ADDBALL, Power.LARGEPADDLE, Power.SMALLPADDLE, Power.LASER, Power.SHOTGUN, Power.PADDLE_EFFICIENCY};
     private Power mPower;
     private Sprite mSprite;
     private float mX;
@@ -26,22 +32,24 @@ public class PowerUp implements DeleteableGameElement {
         if(power != Power.RANDOM) {
             this.mPower = power;
         } else {
-            switch((int) (Math.random() * 5)) {
-                case 0:
-                    mPower = Power.ADDBALL;
-                    break;
-                case 1:
-                    mPower = Power.LARGEPADDLE;
-                    break;
-                case 2:
-                    mPower = Power.SMALLPADDLE;
-                    break;
-                case 3:
-                    mPower = Power.LASER;
-                    break;
-                case 4:
-                    mPower = Power.SHOTGUN;
+            List<Power> allowedPowerups = new ArrayList<Power>(Arrays.asList(POWERS));
+            int extraBallCount = 0;
+            for(Power p : Game.activePowerups) {
+                if(p == Power.ADDBALL) {
+                    extraBallCount++;
+                } else if(p == Power.SMALLPADDLE || p == Power.LARGEPADDLE) {
+                    allowedPowerups.remove(Power.LARGEPADDLE);
+                    allowedPowerups.remove(Power.SMALLPADDLE);
+                } else if(p == Power.SHOTGUN) {
+                    allowedPowerups.remove(Power.SHOTGUN);
+                } else if(p == Power.PADDLE_EFFICIENCY) {
+                    allowedPowerups.remove(Power.PADDLE_EFFICIENCY);
+                }
+                if(extraBallCount == 3) {
+                    allowedPowerups.remove(Power.ADDBALL);
+                }
             }
+            mPower = allowedPowerups.get((int)(Math.random() * allowedPowerups.size()));
         }
 
     }
@@ -68,7 +76,7 @@ public class PowerUp implements DeleteableGameElement {
 
     //Main
     public void update() {
-        mY -= 2;
+        mY -= 3;
         if(mY < 0) {
             mIsDead = true;
         }
@@ -79,8 +87,4 @@ public class PowerUp implements DeleteableGameElement {
         mSprite.draw(batch);
     }
 
-    //Helpers
-    void hitPaddle() {
-        mIsDead = true;
-    }
 }

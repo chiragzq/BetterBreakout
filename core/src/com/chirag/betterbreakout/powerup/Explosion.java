@@ -5,26 +5,39 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.chirag.betterbreakout.DeleteableGameElement;
 import com.chirag.betterbreakout.Game;
 import com.chirag.betterbreakout.MovingGameElement;
+import com.chirag.betterbreakout.Paddle;
 import com.chirag.betterbreakout.Rectangular;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class Explosion implements DeleteableGameElement {
-    private static final int PARTICLE_NUM = 50;
+    private static Map<Particle.ParticleType, Integer> particleNums = new HashMap<Particle.ParticleType, Integer>();
+    private static Map<Particle.ParticleType, Integer> fuelAmounts = new HashMap<Particle.ParticleType, Integer>();
+
+    static {
+        particleNums.put(Particle.ParticleType.EXPLOSION, 75);
+        particleNums.put(Particle.ParticleType.BULLET, 50);
+        fuelAmounts.put(Particle.ParticleType.EXPLOSION, 6);
+        fuelAmounts.put(Particle.ParticleType.BULLET, 4);
+    }
 
     private ArrayList<Particle> mParticles;
+    private Particle.ParticleType mParticleType;
 
-    public Explosion(float x, float y, Color color) {
+    public Explosion(float x, float y, Color color, Particle.ParticleType particleType) {
         mParticles = new ArrayList<Particle>();
+        mParticleType = particleType;
         Random random = new Random();
 
-        for(int i = 0;i < PARTICLE_NUM;i ++) {
-            float xVel = random.nextFloat() * 9 - 4;
-            float yVel = random.nextFloat() * 9 - 4;
+        for(int i = 0;i < particleNums.get(particleType);i ++) {
+            float xVel = random.nextFloat() * 7 - 4;
+            float yVel = random.nextFloat() * 7 - 4;
 
-            mParticles.add(new Particle(x, y, xVel, yVel, Particle.ParticleType.EXPLOSION, color));
+            mParticles.add(new Particle(x, y, xVel, yVel, particleType, color));
         }
     }
 
@@ -33,13 +46,14 @@ public class Explosion implements DeleteableGameElement {
         return mParticles.isEmpty();
     }
 
-    public void update(Rectangular rect) {
+    public void update(Paddle paddle) {
         List<Particle> toDelParticle = new ArrayList<Particle>();
         for(Particle particle : mParticles) {
             particle.update();
-            doParticlePaddleCollision(particle, rect);
+            doParticlePaddleCollision(particle, paddle);
             if(particle.isDead()) {
                 toDelParticle.add(particle);
+                paddle.addFuel(fuelAmounts.get(mParticleType));
             }
         }
         mParticles.removeAll(toDelParticle);
@@ -53,8 +67,7 @@ public class Explosion implements DeleteableGameElement {
 
     private void doParticlePaddleCollision(MovingGameElement particle, Rectangular paddle) {
          if(Game.getCollisionSide(particle, paddle) == Game.Side.TOP) {
-             particle.stepBack();
-             particle.reverseY();
+             particle.setDead(true);
          }
     }
 }

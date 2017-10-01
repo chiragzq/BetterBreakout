@@ -41,6 +41,10 @@ public class MovingGameElement extends BaseGameElement {
         mYVel *= -1;
     }
 
+    public void setDead(boolean isDead) {
+        mIsDead = isDead;
+    }
+
     public void update() {
         mX += mXVel;
         mY += mYVel;

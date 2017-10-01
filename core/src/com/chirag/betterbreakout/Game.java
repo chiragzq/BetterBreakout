@@ -9,11 +9,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.chirag.betterbreakout.powerup.Bullet;
 import com.chirag.betterbreakout.powerup.Explosion;
 import com.chirag.betterbreakout.powerup.Laser;
+import com.chirag.betterbreakout.powerup.Particle;
 import com.chirag.betterbreakout.powerup.PowerUp;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 public class Game {
     public enum Side {
@@ -32,6 +32,7 @@ public class Game {
     private List<Laser> lasers;
     private List<Explosion> explosions;
     private List<Bullet> bullets;
+    public static List<PowerUp.Power> activePowerups = new ArrayList<PowerUp.Power>();
 
     Game(Texture brickTexture, Texture powerTexture) {
         this.powerTexture = powerTexture;
@@ -43,20 +44,14 @@ public class Game {
         balls.add(new Ball(15, 960, 110, brickTexture));
 
         lasers = new ArrayList<Laser>();
-
         paddle = new Paddle(brickTexture, 120, 80);
-
         powerUps = new ArrayList<PowerUp>();
-
         explosions = new ArrayList<Explosion>();
-
         bullets = new ArrayList<Bullet>();
-
         isReset = false;
-
         score = 0;
-
         glyphLayout = new GlyphLayout();
+        activePowerups.add(PowerUp.Power.ADDBALL);
     }
 
     void update() {
@@ -115,7 +110,7 @@ public class Game {
                 if(isColliding(b.getSprite(), bullet.getSprite())) {
                     toDelBrick.add(b);
                     toDelBullet.add(bullet);
-                    explosions.add(new Explosion(b.getX(),b.getY(),b.getColor()));
+                    explosions.add(new Explosion(b.getX(),b.getY(),b.getColor(), Particle.ParticleType.BULLET));
                 }
             }
         }
@@ -124,11 +119,12 @@ public class Game {
             ball.update();
             if(ball.isDead()) {
                 toDelBall.add(ball);
+                activePowerups.remove(PowerUp.Power.ADDBALL);
                 continue;
             }
             for(Brick brick : bricks.getBricks()) {
                 if(brick.isDead()) {
-                    explosions.add(new Explosion(brick.getX(), brick.getY(), brick.getColor()));
+                    explosions.add(new Explosion(brick.getX(), brick.getY(), brick.getColor(), Particle.ParticleType.EXPLOSION));
                     toDelBrick.add(brick);
                 }
                 doBallBrickCollision(ball, brick);
@@ -198,7 +194,7 @@ public class Game {
             );
         } else {
             bitmapFont.draw(batch, "Score: " + score, 0, BetterBreakout.GAME_HEIGHT - 2);
-            bitmapFont.draw(batch, "Fuel: " + score, 0, BetterBreakout.GAME_HEIGHT - 50);
+            bitmapFont.draw(batch, "Fuel: " + paddle.getFuel(), 0, BetterBreakout.GAME_HEIGHT - 50);
         }
     }
 
@@ -251,12 +247,27 @@ public class Game {
                 Ball b = new Ball(15, 960, 110, brickTexture);
                 balls.add(b);
                 b.launch(Gdx.input.getX());
+                activePowerups.add(PowerUp.Power.ADDBALL);
                 break;
             case LARGEPADDLE:
                 paddle.setState(Paddle.State.LARGE, 8000);
+                activePowerups.add(PowerUp.Power.LARGEPADDLE);
+                TimeUtil.doLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        activePowerups.remove(PowerUp.Power.LARGEPADDLE);
+                    }
+                }, 8000);
                 break;
             case SMALLPADDLE:
                 paddle.setState(Paddle.State.SMALL, 8000);
+                activePowerups.add(PowerUp.Power.SMALLPADDLE);
+                TimeUtil.doLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        activePowerups.remove(PowerUp.Power.SMALLPADDLE);
+                    }
+                }, 8000);
                 break;
             case LASER:
                 lasers.add(new Laser(brickTexture, powerUp.getX()));
@@ -266,6 +277,59 @@ public class Game {
                 for(int i = 0; i < 8; i++) {
                     bullets.add(new Bullet(brickTexture, paddle.getX(), paddle.getY() + 5));
                 }
+                activePowerups.add(PowerUp.Power.SHOTGUN);
+                TimeUtil.doLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        activePowerups.remove(PowerUp.Power.SHOTGUN);
+                    }
+                }, 10000);
+                break;
+            case PADDLE_EFFICIENCY:
+                switch((int)(Math.random() * 6)) {
+                    case 0:case 4:
+                        paddle.setEfficiency(Paddle.Efficiency.TERRIBLE);
+                        TimeUtil.doLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                paddle.setEfficiency(Paddle.Efficiency.NORMAL);
+                            }
+                        }, 15000);
+                        break;
+                    case 1:case 5:
+                        paddle.setEfficiency(Paddle.Efficiency.BAD);
+                        TimeUtil.doLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                paddle.setEfficiency(Paddle.Efficiency.NORMAL);
+                            }
+                        }, 15000);
+                        break;
+                    case 2:
+                        paddle.setEfficiency(Paddle.Efficiency.GOOD);
+                        TimeUtil.doLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                paddle.setEfficiency(Paddle.Efficiency.NORMAL);
+                            }
+                        }, 15000);
+                        break;
+                    case 3:
+                        paddle.setEfficiency(Paddle.Efficiency.AMAZING);
+                        TimeUtil.doLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                paddle.setEfficiency(Paddle.Efficiency.NORMAL);
+                            }
+                        }, 15000);
+                }
+                activePowerups.add(PowerUp.Power.PADDLE_EFFICIENCY);
+                TimeUtil.doLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        activePowerups.remove(PowerUp.Power.PADDLE_EFFICIENCY);
+                    }
+                }, 15100);
         }
     }
 
@@ -277,7 +341,7 @@ public class Game {
                 ball.stepBack();
                 ball.reverseX();
                 brick.gotHit();
-                if(Math.random() > 0.8) {
+                if(Math.random() > 0.4) {
                     powerUps.add(new PowerUp(
                             PowerUp.Power.RANDOM,
                             powerTexture,
@@ -294,7 +358,7 @@ public class Game {
                 ball.stepBack();
                 ball.reverseY();
                 brick.gotHit();
-                if(Math.random() > 0.8) {
+                if(Math.random() > 0.4) {
                     powerUps.add(new PowerUp(
                             PowerUp.Power.RANDOM,
                             powerTexture,
@@ -321,7 +385,7 @@ public class Game {
         }, 8000);
     }
 
-    void reset() {
+    private void reset() {
         score = 0;
         paddle = new Paddle(brickTexture, -2385, -21394);
         bricks = new BrickPattern(brickTexture);
@@ -332,11 +396,271 @@ public class Game {
         bullets = new ArrayList<Bullet>();
     }
 
-    void start() {
+    private void start() {
         paddle = new Paddle(brickTexture, 120, 80);
         bricks.generateGrid(15, 10, 10);
         balls.add(new Ball(15, 960, 110, brickTexture));
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
