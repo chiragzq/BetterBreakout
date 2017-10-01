@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
 import com.chirag.betterbreakout.powerup.Particle;
 
 public class BetterBreakout extends ApplicationAdapter {
@@ -16,15 +17,17 @@ public class BetterBreakout extends ApplicationAdapter {
 	public static final int GAME_HEIGHT = 1080;
 
 	@Override
-	public void create () {
+	public void create() {
 		Particle.loadAllTextures();
 		game = new Game(new Texture("brick.png"), new Texture("power.png"));
 		batch = new SpriteBatch();
+		Matrix4 transform = new Matrix4();
+		batch.setTransformMatrix(transform);
 		bitmapFont = new BitmapFont(Gdx.files.internal("font.fnt"));
 	}
 
 	@Override
-	public void render () {
+	public void render() {
 		game.update();
 		TimeUtil.update();
 
@@ -39,7 +42,7 @@ public class BetterBreakout extends ApplicationAdapter {
 	}
 	
 	@Override
-	public void dispose () {
+	public void dispose() {
 		batch.dispose();
 		bitmapFont.dispose();
 	}

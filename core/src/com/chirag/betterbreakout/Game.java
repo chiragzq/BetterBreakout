@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
 import com.chirag.betterbreakout.powerup.Bullet;
 import com.chirag.betterbreakout.powerup.Explosion;
 import com.chirag.betterbreakout.powerup.Laser;
@@ -26,7 +27,7 @@ public class Game {
     private Texture brickTexture;
     private Texture powerTexture;
     private Paddle paddle;
-    private BrickPattern bricks;
+    private BrickGenerator bricks;
     private List<Ball> balls;
     private List<PowerUp> powerUps;
     private List<Laser> lasers;
@@ -37,8 +38,7 @@ public class Game {
     Game(Texture brickTexture, Texture powerTexture) {
         this.powerTexture = powerTexture;
         this.brickTexture = brickTexture;
-        bricks = new BrickPattern(brickTexture);
-        bricks.generateGrid(15, 10, 10);
+        bricks = new BrickGenerator(brickTexture);
 
         balls = new ArrayList<Ball>();
         balls.add(new Ball(15, 960, 110, brickTexture));
@@ -55,6 +55,8 @@ public class Game {
     }
 
     void update() {
+        bricks.moveDown(0.1f);
+
         List<Brick> toDelBrick = new ArrayList<Brick>();
         List<Ball> toDelBall = new ArrayList<Ball>();
         List<PowerUp> toDelPowerUp = new ArrayList<PowerUp>();
@@ -113,6 +115,9 @@ public class Game {
                     explosions.add(new Explosion(b.getX(),b.getY(),b.getColor(), Particle.ParticleType.BULLET));
                 }
             }
+            if(isColliding(paddle.getSprite(), b.getSprite())) {
+                balls.clear();
+            }
         }
 
         for(Ball ball : balls) {
@@ -147,7 +152,7 @@ public class Game {
                     if(xdif > paddle.getWidth()) {
                         xdif = paddle.getWidth();
                     }
-                    float angle = (xdif * 120 / paddle.getWidth());
+                    float angle = (xdif * 150 / paddle.getWidth());
                     ball.stepBack();
                     ball.setDirection((int) angle, 10);
 
@@ -221,8 +226,8 @@ public class Game {
 
         float xDisOld = Math.abs((ball.getOldX()) - (rect.getX())); //ball center - vel
 
-        float avgWidth = (ball.getWidth() + Brick.WIDTH) / 2;
-        float avgHeight = (ball.getHeight() + Brick.HEIGHT) / 2;
+        float avgWidth = (ball.getWidth() + rect.getWidth()) / 2;
+        float avgHeight = (ball.getHeight() + rect.getHeight()) / 2;
 
         if(xDis < avgWidth && yDis < avgHeight) {
             if(xDisOld < avgWidth) {
@@ -388,7 +393,7 @@ public class Game {
     private void reset() {
         score = 0;
         paddle = new Paddle(brickTexture, -2385, -21394);
-        bricks = new BrickPattern(brickTexture);
+        bricks.clearBricks();
         balls = new ArrayList<Ball>();
         powerUps = new ArrayList<PowerUp>();
         lasers = new ArrayList<Laser>();
@@ -397,8 +402,8 @@ public class Game {
     }
 
     private void start() {
+        bricks = new BrickGenerator(brickTexture);
         paddle = new Paddle(brickTexture, 120, 80);
-        bricks.generateGrid(15, 10, 10);
         balls.add(new Ball(15, 960, 110, brickTexture));
     }
 }

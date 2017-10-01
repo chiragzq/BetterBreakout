@@ -19,30 +19,32 @@ public class Paddle implements Rectangular{
         TERRIBLE, BAD, NORMAL, GOOD, AMAZING
     }
 
-    private static Map<State, Integer> WIDTHS;
-    private static Map<Efficiency, Float> FUEL_MULTIPLIER;
-    private static Map<Efficiency, Color> EFFICIENCY_COLOR;
+    private static Map<State, Integer> WIDTHS = new HashMap<State, Integer>();
+    private static Map<Efficiency, Float> FUEL_MULTIPLIER = new HashMap<Efficiency, Float>();
+    private static Map<Efficiency, Color> EFFICIENCY_COLOR = new HashMap<Efficiency, Color>();
+    private static Map<State, Float> SIZE_MULTIPLIER = new HashMap<State, Float>();
     private static final int HEIGHT = 30;
 
     static {
-        WIDTHS = new HashMap<State, Integer>();
         WIDTHS.put(State.NORMAL, 100);
         WIDTHS.put(State.SMALL, 50);
         WIDTHS.put(State.LARGE, 150);
 
-        FUEL_MULTIPLIER = new HashMap<Efficiency, Float>();
         FUEL_MULTIPLIER.put(Efficiency.TERRIBLE, 1.8f);
         FUEL_MULTIPLIER.put(Efficiency.BAD, 1.4f);
         FUEL_MULTIPLIER.put(Efficiency.NORMAL, 1.0f);
         FUEL_MULTIPLIER.put(Efficiency.GOOD, 0.8f);
         FUEL_MULTIPLIER.put(Efficiency.AMAZING, 0.6f);
 
-        EFFICIENCY_COLOR = new HashMap<Efficiency, Color>();
         EFFICIENCY_COLOR.put(Efficiency.TERRIBLE, Color.RED);
         EFFICIENCY_COLOR.put(Efficiency.BAD, Color.ORANGE);
         EFFICIENCY_COLOR.put(Efficiency.NORMAL, Color.WHITE);
         EFFICIENCY_COLOR.put(Efficiency.GOOD, Color.YELLOW);
         EFFICIENCY_COLOR.put(Efficiency.AMAZING, Color.GREEN);
+
+        SIZE_MULTIPLIER.put(State.SMALL, 0.5f);
+        SIZE_MULTIPLIER.put(State.NORMAL, 1f);
+        SIZE_MULTIPLIER.put(State.LARGE, 1.5f);
     }
 
     private int mFuel;
@@ -107,7 +109,7 @@ public class Paddle implements Rectangular{
 
     void update() {
         if(Math.abs(Gdx.input.getX() - mX) < mFuel) {
-            mFuel -= Math.abs(Gdx.input.getX() - mX) * FUEL_MULTIPLIER.get(mEfficiency);
+            mFuel -= Math.abs(Gdx.input.getX() - mX) * FUEL_MULTIPLIER.get(mEfficiency) * SIZE_MULTIPLIER.get(mState);
             mX = Gdx.input.getX();
         }
 

@@ -14,15 +14,17 @@ class Brick implements DeleteableGameElement, Rectangular {
     private boolean mIsDead;
     private float mX;
     private float mY;
+    private BrickGenerator mBrickGenerator;
     private Color mColor;
 
-    Brick(Texture brickTexture, int x, int y, Color color) {
+    Brick(Texture brickTexture, int x, int y, Color color, BrickGenerator brickGenerator) {
         mSprite = new Sprite(brickTexture);
         mSprite.setColor(color);
         mSprite.setSize(WIDTH, HEIGHT);
         mColor = color;
         mX = x;
         mY = y;
+        mBrickGenerator = brickGenerator;
     }
 
     //Getters
@@ -38,7 +40,7 @@ class Brick implements DeleteableGameElement, Rectangular {
 
     @Override
     public float getY() {
-        return mY;
+        return mY + mBrickGenerator.getBottomY();
     }
 
     @Override
@@ -70,7 +72,7 @@ class Brick implements DeleteableGameElement, Rectangular {
     }
 
     void draw(SpriteBatch batch) {
-        mSprite.setCenter(mX, mY);
+        mSprite.setCenter(mX, mY + mBrickGenerator.getBottomY());
         mSprite.draw(batch);
     }
 
