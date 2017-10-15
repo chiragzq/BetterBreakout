@@ -2,6 +2,7 @@ package com.chirag.betterbreakout.powerup;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.chirag.betterbreakout.BetterBreakout;
 import com.chirag.betterbreakout.DeleteableGameElement;
 import com.chirag.betterbreakout.Game;
 import com.chirag.betterbreakout.MovingGameElement;
@@ -32,8 +33,7 @@ public class Explosion implements DeleteableGameElement {
         mParticles = new ArrayList<Particle>();
         mParticleType = particleType;
         Random random = new Random();
-
-        for(int i = 0;i < particleNums.get(particleType);i ++) {
+        for(int i = 0; i < particleNums.get(particleType) * (-3 / 5.0 * BetterBreakout.deviceType + 1); i ++) {
             float xVel = random.nextFloat() * 7 - 4;
             float yVel = random.nextFloat() * 7 - 4;
 
@@ -53,7 +53,7 @@ public class Explosion implements DeleteableGameElement {
             doParticlePaddleCollision(particle, paddle);
             if(particle.isDead()) {
                 toDelParticle.add(particle);
-                paddle.addFuel(fuelAmounts.get(mParticleType));
+                paddle.addFuel((int)(fuelAmounts.get(mParticleType) * (3 / 2.0 * BetterBreakout.deviceType + 1)));
             }
         }
         mParticles.removeAll(toDelParticle);

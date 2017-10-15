@@ -18,6 +18,7 @@ public class BrickGenerator {
     private int mCurrentRow;
     private float mBottomY;
     private Random mRandom;
+    private boolean mIsStopped;
 
     private static final int TOP_PADDING = 120;
     private final Color[] RAINBOW = {Color.RED, Color.ORANGE, Color.GOLD, Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.PURPLE, Color.PINK, Color.WHITE};
@@ -27,10 +28,15 @@ public class BrickGenerator {
         mBricks = new HashSet<Brick>();
         mBottomY = BetterBreakout.GAME_HEIGHT - 435;
         mBrickTexture = brickTexture;
+        mIsStopped = false;
     }
 
     Set<Brick> getBricks() {
         return mBricks;
+    }
+
+    void stop() {
+        mIsStopped = true;
     }
 
     float getBottomY() {
@@ -47,7 +53,7 @@ public class BrickGenerator {
         }
 
         int rowHeight = Brick.HEIGHT + 10;
-        while(mCurrentRow * rowHeight + mBottomY < BetterBreakout.GAME_HEIGHT + Brick.HEIGHT) {
+        while(mCurrentRow * rowHeight + mBottomY < BetterBreakout.GAME_HEIGHT + Brick.HEIGHT && !mIsStopped) {
             addNewRow();
         }
     }
@@ -75,11 +81,11 @@ public class BrickGenerator {
     }
 
     void addNewRow() {
-        int widthBricks = 15;
+        int widthBricks = 20;
         int brickPadding = 10;
         int sidePadding = (BetterBreakout.GAME_WIDTH - Brick.WIDTH * widthBricks + (widthBricks-1) * brickPadding) / 2;
         int rowHeight = Brick.HEIGHT + brickPadding;
-        int brickLossChance = Math.max(0, 75 - mCurrentRow * 2);
+        int brickLossChance = Math.max(0, (int)(65 - mCurrentRow * 2.1));
         for(int i = sidePadding; i <= BetterBreakout.GAME_WIDTH - sidePadding; i += Brick.WIDTH + brickPadding) {
             if(mRandom.nextInt(100) < brickLossChance) continue;
             add(i, rowHeight * mCurrentRow, RAINBOW[RAINBOW.length - mCurrentRow % RAINBOW.length - 1]);

@@ -10,11 +10,18 @@ import com.badlogic.gdx.math.Matrix4;
 import com.chirag.betterbreakout.powerup.Particle;
 
 public class BetterBreakout extends ApplicationAdapter {
-	SpriteBatch batch;
-	Game game;
-	BitmapFont bitmapFont;
+	public static int deviceType; //0 = desktop, 1 = mobile
+	public final static float scaleMult = 0.5f; //how much zoomed in it is
+	private SpriteBatch batch;
+	private Game game;
+	private BitmapFont bitmapFont;
 	public static final int GAME_WIDTH = 1920;
 	public static final int GAME_HEIGHT = 1080;
+
+	public BetterBreakout(int device) {
+		deviceType = device;
+		ControlsUtil.setDeviceType(device);
+	}
 
 	@Override
 	public void create() {
@@ -22,6 +29,7 @@ public class BetterBreakout extends ApplicationAdapter {
 		game = new Game(new Texture("brick.png"), new Texture("power.png"));
 		batch = new SpriteBatch();
 		Matrix4 transform = new Matrix4();
+		transform.scale(1/scaleMult, 1/scaleMult,1/scaleMult);
 		batch.setTransformMatrix(transform);
 		bitmapFont = new BitmapFont(Gdx.files.internal("font.fnt"));
 	}
@@ -30,6 +38,7 @@ public class BetterBreakout extends ApplicationAdapter {
 	public void render() {
 		game.update();
 		TimeUtil.update();
+		ControlsUtil.update();
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

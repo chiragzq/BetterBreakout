@@ -12,10 +12,10 @@ import java.util.List;
 
 public class PowerUp implements DeleteableGameElement {
     public enum Power {
-        ADDBALL, LARGEPADDLE, SMALLPADDLE, LASER, SHOTGUN, RANDOM, PADDLE_EFFICIENCY
+        ADDBALL, LARGEPADDLE, SMALLPADDLE, LASER, SHOTGUN, RANDOM, PADDLE_EFFICIENCY, PADDLE_SPEED
     }
 
-    private static final Power[] POWERS = {Power.ADDBALL, Power.LARGEPADDLE, Power.SMALLPADDLE, Power.LASER, Power.SHOTGUN, Power.PADDLE_EFFICIENCY};
+    private static final Power[] POWERS = {Power.PADDLE_SPEED, Power.ADDBALL, Power.LARGEPADDLE, Power.SMALLPADDLE, Power.LASER, Power.SHOTGUN, Power.PADDLE_EFFICIENCY};
     private Power mPower;
     private Sprite mSprite;
     private float mX;
@@ -44,6 +44,8 @@ public class PowerUp implements DeleteableGameElement {
                     allowedPowerups.remove(Power.SHOTGUN);
                 } else if(p == Power.PADDLE_EFFICIENCY) {
                     allowedPowerups.remove(Power.PADDLE_EFFICIENCY);
+                } else if(p == Power.PADDLE_SPEED) {
+                    allowedPowerups.remove(Power.PADDLE_SPEED);
                 }
                 if(extraBallCount == 3) {
                     allowedPowerups.remove(Power.ADDBALL);

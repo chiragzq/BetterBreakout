@@ -14,7 +14,7 @@ public class AndroidLauncher extends AndroidApplication {
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.hideStatusBar = true;
 		config.useImmersiveMode = true;
-		initialize(new BetterBreakout(), config);
+		initialize(new BetterBreakout(1), config);
 	}
 
 }

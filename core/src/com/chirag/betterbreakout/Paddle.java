@@ -1,6 +1,5 @@
 package com.chirag.betterbreakout;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -26,15 +25,15 @@ public class Paddle implements Rectangular{
     private static final int HEIGHT = 30;
 
     static {
-        WIDTHS.put(State.NORMAL, 100);
-        WIDTHS.put(State.SMALL, 50);
-        WIDTHS.put(State.LARGE, 150);
+        WIDTHS.put(State.NORMAL, 150);
+        WIDTHS.put(State.SMALL, 75);
+        WIDTHS.put(State.LARGE, 225);
 
-        FUEL_MULTIPLIER.put(Efficiency.TERRIBLE, 1.8f);
-        FUEL_MULTIPLIER.put(Efficiency.BAD, 1.4f);
-        FUEL_MULTIPLIER.put(Efficiency.NORMAL, 1.0f);
-        FUEL_MULTIPLIER.put(Efficiency.GOOD, 0.8f);
-        FUEL_MULTIPLIER.put(Efficiency.AMAZING, 0.6f);
+        FUEL_MULTIPLIER.put(Efficiency.TERRIBLE, 2f);
+        FUEL_MULTIPLIER.put(Efficiency.BAD, 1.6f);
+        FUEL_MULTIPLIER.put(Efficiency.NORMAL, 1.2f);
+        FUEL_MULTIPLIER.put(Efficiency.GOOD, 1f);
+        FUEL_MULTIPLIER.put(Efficiency.AMAZING, 0.8f);
 
         EFFICIENCY_COLOR.put(Efficiency.TERRIBLE, Color.RED);
         EFFICIENCY_COLOR.put(Efficiency.BAD, Color.ORANGE);
@@ -47,6 +46,7 @@ public class Paddle implements Rectangular{
         SIZE_MULTIPLIER.put(State.LARGE, 1.5f);
     }
 
+    private float mSpeed;
     private int mFuel;
     private Efficiency mEfficiency;
     private float mX;
@@ -56,11 +56,12 @@ public class Paddle implements Rectangular{
     private float mY;
     private float mWidth;
 
-    Paddle(Texture paddleTexture, float x, float y) {
-        mX = Gdx.input.getX();
+    Paddle(Texture paddleTexture, float y) {
+        mX = BetterBreakout.GAME_WIDTH/2;
         mY = y;
         mWidth = WIDTHS.get(State.NORMAL);
         mFuel = 5000;
+        mSpeed = 15;
 
         mEfficiency = Efficiency.NORMAL;
         mState = State.NORMAL;
@@ -102,15 +103,19 @@ public class Paddle implements Rectangular{
         return mSprite;
     }
 
-    public void setEfficiency(Efficiency efficiency) {
+    void setEfficiency(Efficiency efficiency) {
         mEfficiency = efficiency;
         mSprite.setColor(EFFICIENCY_COLOR.get(efficiency));
     }
 
+    void setSpeed(float speed) {
+        mSpeed = speed;
+    }
+
     void update() {
-        if(Math.abs(Gdx.input.getX() - mX) < mFuel) {
-            mFuel -= Math.abs(Gdx.input.getX() - mX) * FUEL_MULTIPLIER.get(mEfficiency) * SIZE_MULTIPLIER.get(mState);
-            mX = Gdx.input.getX();
+        if(mFuel > mSpeed && ControlsUtil.direction != 0) {
+            mFuel -= mSpeed * FUEL_MULTIPLIER.get(mEfficiency) * SIZE_MULTIPLIER.get(mState);
+            mX += ControlsUtil.direction * mSpeed;
         }
 
         if(mState != State.NORMAL) {
@@ -120,6 +125,8 @@ public class Paddle implements Rectangular{
                 mSprite.setCenter(mX, mY);
             }
         }
+
+        mFuel = Math.max(0, mFuel);
     }
 
     void draw(SpriteBatch batch) {
@@ -138,8 +145,7 @@ public class Paddle implements Rectangular{
 
         mWidth = WIDTHS.get(state);
         mPowerUpEndTime = System.currentTimeMillis() + duration;
-        mX = Gdx.input.getX();
-        mSprite.setBounds(mX, mY, mWidth, HEIGHT);
-
+        mSprite.setSize(mWidth, HEIGHT);
+        mSprite.setCenterX(mX);
     }
 }

@@ -11,7 +11,7 @@ class Ball extends MovingGameElement {
         super(ballTexture, x, y, radius * 2, radius * 2, 0, 0);
         mRadius = radius;
 
-        launch(BetterBreakout.GAME_WIDTH / 2);
+        launch(x);
     }
 
     //Setters
@@ -44,7 +44,7 @@ class Ball extends MovingGameElement {
         mSprite.setRotation(dir);
     }
 
-    void launch(int x) {
+    void launch(float x) {
         setDirection((int) (Math.random() * 160 - 1) + 10, 10);
         mX = x;
     }

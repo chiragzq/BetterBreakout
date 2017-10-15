@@ -7,8 +7,8 @@ import com.chirag.betterbreakout.BetterBreakout;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 1920;
-		config.height = 1080;
-		new LwjglApplication(new BetterBreakout(), config);
+		config.width = (int)(1920 / BetterBreakout.scaleMult);
+		config.height = (int)(1080 / BetterBreakout.scaleMult);
+		new LwjglApplication(new BetterBreakout(0), config);
 	}
 }

@@ -41,10 +41,10 @@ public class Game {
         bricks = new BrickGenerator(brickTexture);
 
         balls = new ArrayList<Ball>();
-        balls.add(new Ball(15, 960, 110, brickTexture));
+        paddle = new Paddle(brickTexture, 80);
+        balls.add(new Ball(15, paddle.getX(), 110, brickTexture));
 
         lasers = new ArrayList<Laser>();
-        paddle = new Paddle(brickTexture, 120, 80);
         powerUps = new ArrayList<PowerUp>();
         explosions = new ArrayList<Explosion>();
         bullets = new ArrayList<Bullet>();
@@ -118,6 +118,10 @@ public class Game {
             if(isColliding(paddle.getSprite(), b.getSprite())) {
                 balls.clear();
             }
+            if(b.getY() < -1 * Brick.HEIGHT/2) {
+                b.setDead(true);
+                score -= 5;
+            }
         }
 
         for(Ball ball : balls) {
@@ -131,8 +135,9 @@ public class Game {
                 if(brick.isDead()) {
                     explosions.add(new Explosion(brick.getX(), brick.getY(), brick.getColor(), Particle.ParticleType.EXPLOSION));
                     toDelBrick.add(brick);
+                } else {
+                    doBallBrickCollision(ball, brick);
                 }
-                doBallBrickCollision(ball, brick);
             }
             switch(getCollisionSide(ball, paddle)) {
                 case LEFT:
@@ -198,9 +203,9 @@ public class Game {
                     BetterBreakout.GAME_HEIGHT/2 + glyphLayout.height
             );
         } else {
-            bitmapFont.draw(batch, "Score: " + score, 0, BetterBreakout.GAME_HEIGHT - 2);
             bitmapFont.draw(batch, "Fuel: " + paddle.getFuel(), 0, BetterBreakout.GAME_HEIGHT - 50);
         }
+        bitmapFont.draw(batch, "Score: " + score, 0, BetterBreakout.GAME_HEIGHT - 2);
     }
 
     private boolean isColliding(Sprite s1, Sprite s2) {
@@ -249,9 +254,8 @@ public class Game {
     private void onPowerUp(PowerUp powerUp) {
         switch(powerUp.getPower()) {
             case ADDBALL:
-                Ball b = new Ball(15, 960, 110, brickTexture);
+                Ball b = new Ball(15, paddle.getX(), 110, brickTexture);
                 balls.add(b);
-                b.launch(Gdx.input.getX());
                 activePowerups.add(PowerUp.Power.ADDBALL);
                 break;
             case LARGEPADDLE:
@@ -287,6 +291,21 @@ public class Game {
                     @Override
                     public void run() {
                         activePowerups.remove(PowerUp.Power.SHOTGUN);
+                    }
+                }, 10000);
+                break;
+            case PADDLE_SPEED:
+                if(Math.random() > 0.5) {
+                    paddle.setSpeed(19.5f);
+                } else {
+                    paddle.setSpeed(12f);
+                }
+                activePowerups.add(PowerUp.Power.PADDLE_SPEED);
+                TimeUtil.doLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        paddle.setSpeed(10);
+                        activePowerups.remove(PowerUp.Power.PADDLE_SPEED);
                     }
                 }, 10000);
                 break;
@@ -391,9 +410,9 @@ public class Game {
     }
 
     private void reset() {
-        score = 0;
-        paddle = new Paddle(brickTexture, -2385, -21394);
+        paddle = new Paddle(brickTexture,-21394);
         bricks.clearBricks();
+        bricks.stop();
         balls = new ArrayList<Ball>();
         powerUps = new ArrayList<PowerUp>();
         lasers = new ArrayList<Laser>();
@@ -402,265 +421,12 @@ public class Game {
     }
 
     private void start() {
+        score = 0;
         bricks = new BrickGenerator(brickTexture);
-        paddle = new Paddle(brickTexture, 120, 80);
-        balls.add(new Ball(15, 960, 110, brickTexture));
+        paddle = new Paddle(brickTexture,80);
+        balls.add(new Ball(15, paddle.getX(), 110, brickTexture));
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
