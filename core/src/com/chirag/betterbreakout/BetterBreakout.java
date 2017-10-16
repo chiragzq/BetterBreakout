@@ -11,7 +11,7 @@ import com.chirag.betterbreakout.powerup.Particle;
 
 public class BetterBreakout extends ApplicationAdapter {
 	public static int deviceType; //0 = desktop, 1 = mobile
-	public final static float scaleMult = 0.5f; //how much zoomed in it is
+	public final static float scaleMult = 1f; //how much zoomed in it is
 	private SpriteBatch batch;
 	private Game game;
 	private BitmapFont bitmapFont;

@@ -46,8 +46,9 @@ public class Paddle implements Rectangular{
         SIZE_MULTIPLIER.put(State.LARGE, 1.5f);
     }
 
+    private float mMaxFuel;
     private float mSpeed;
-    private int mFuel;
+    private float mFuel;
     private Efficiency mEfficiency;
     private float mX;
     private long mPowerUpEndTime;
@@ -61,6 +62,7 @@ public class Paddle implements Rectangular{
         mY = y;
         mWidth = WIDTHS.get(State.NORMAL);
         mFuel = 5000;
+        mMaxFuel = 10000;
         mSpeed = 15;
 
         mEfficiency = Efficiency.NORMAL;
@@ -90,12 +92,13 @@ public class Paddle implements Rectangular{
         return HEIGHT;
     }
 
-    int getFuel() {
+    float getFuel() {
         return mFuel;
     }
 
     public void addFuel(int value) {
         mFuel += value;
+        mFuel = Math.min(mFuel, mMaxFuel);
     }
 
     Sprite getSprite() {
@@ -110,6 +113,10 @@ public class Paddle implements Rectangular{
 
     void setSpeed(float speed) {
         mSpeed = speed;
+    }
+
+    void setMaxFuel(float amt) {
+        mMaxFuel = amt;
     }
 
     void update() {

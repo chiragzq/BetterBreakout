@@ -1,11 +1,12 @@
 package com.chirag.betterbreakout.powerup;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.chirag.betterbreakout.BetterBreakout;
 import com.chirag.betterbreakout.DeleteableGameElement;
-import com.chirag.betterbreakout.Game;
-import com.chirag.betterbreakout.MovingGameElement;
 import com.chirag.betterbreakout.Paddle;
 import com.chirag.betterbreakout.Rectangular;
 
@@ -16,14 +17,23 @@ import java.util.Map;
 import java.util.Random;
 
 public class Explosion implements DeleteableGameElement {
+    private static Map<Particle.ParticleType, Sprite> particleSprites = new HashMap<Particle.ParticleType, Sprite>();
     private static Map<Particle.ParticleType, Integer> particleNums = new HashMap<Particle.ParticleType, Integer>();
     private static Map<Particle.ParticleType, Integer> fuelAmounts = new HashMap<Particle.ParticleType, Integer>();
 
     static {
         particleNums.put(Particle.ParticleType.EXPLOSION, 75);
         particleNums.put(Particle.ParticleType.BULLET, 50);
-        fuelAmounts.put(Particle.ParticleType.EXPLOSION, 6);
-        fuelAmounts.put(Particle.ParticleType.BULLET, 4);
+        fuelAmounts.put(Particle.ParticleType.EXPLOSION, 20);
+        fuelAmounts.put(Particle.ParticleType.BULLET, 15);
+
+        Sprite explosionSprite = new Sprite(new Texture(Gdx.files.internal("brick.png")));
+        explosionSprite.setSize(12f, 12f);
+        Sprite bulletSprite = new Sprite(new Texture(Gdx.files.internal("brick.png")));
+        bulletSprite.setSize(5f, 5f);
+
+        particleSprites.put(Particle.ParticleType.EXPLOSION, explosionSprite);
+        particleSprites.put(Particle.ParticleType.BULLET, bulletSprite);
     }
 
     private ArrayList<Particle> mParticles;
@@ -61,13 +71,22 @@ public class Explosion implements DeleteableGameElement {
 
     public void draw(SpriteBatch batch) {
         for(Particle particle : mParticles) {
-            particle.draw(batch);
+           Sprite sprite = particleSprites.get(particle.getParticleType());
+           sprite.setCenter(particle.getX(), particle.getY());
+           sprite.setColor(particle.getColor());
+           sprite.draw(batch);
         }
     }
 
-    private void doParticlePaddleCollision(MovingGameElement particle, Rectangular paddle) {
-         if(Game.getCollisionSide(particle, paddle) == Game.Side.TOP) {
-             particle.setDead(true);
-         }
+    private void doParticlePaddleCollision(Particle particle, Rectangular paddle) {
+        Sprite sprite = particleSprites.get(particle.getParticleType());
+
+        float xDis = Math.abs((particle.getX()) - (paddle.getX()));
+        float yDis = Math.abs((particle.getY()) - (paddle.getY()));
+
+        float avgWidth = (sprite.getWidth() + paddle.getWidth()) / 2;
+        float avgHeight = (sprite.getHeight() + paddle.getHeight()) / 2;
+
+        particle.setDead(xDis < avgWidth && yDis < avgHeight);
     }
 }

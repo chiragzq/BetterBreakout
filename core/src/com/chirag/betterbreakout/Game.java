@@ -1,19 +1,19 @@
 package com.chirag.betterbreakout;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Matrix4;
 import com.chirag.betterbreakout.powerup.Bullet;
 import com.chirag.betterbreakout.powerup.Explosion;
 import com.chirag.betterbreakout.powerup.Laser;
 import com.chirag.betterbreakout.powerup.Particle;
 import com.chirag.betterbreakout.powerup.PowerUp;
+import com.chirag.betterbreakout.ui.FuelBar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Game {
@@ -28,6 +28,7 @@ public class Game {
     private Texture powerTexture;
     private Paddle paddle;
     private BrickGenerator bricks;
+    private FuelBar mFuelBar;
     private List<Ball> balls;
     private List<PowerUp> powerUps;
     private List<Laser> lasers;
@@ -42,7 +43,9 @@ public class Game {
 
         balls = new ArrayList<Ball>();
         paddle = new Paddle(brickTexture, 80);
+        paddle.setMaxFuel(10000);
         balls.add(new Ball(15, paddle.getX(), 110, brickTexture));
+        mFuelBar = new FuelBar(brickTexture, 10000);
 
         lasers = new ArrayList<Laser>();
         powerUps = new ArrayList<PowerUp>();
@@ -165,6 +168,8 @@ public class Game {
 
         }
 
+        mFuelBar.setFuel(paddle.getFuel());
+
         bullets.removeAll(toDelBullet);
         bricks.removeAll(toDelBrick);
         balls.removeAll(toDelBall);
@@ -203,12 +208,12 @@ public class Game {
                     BetterBreakout.GAME_HEIGHT/2 + glyphLayout.height
             );
         } else {
-            bitmapFont.draw(batch, "Fuel: " + paddle.getFuel(), 0, BetterBreakout.GAME_HEIGHT - 50);
+            mFuelBar.draw(batch);
         }
         bitmapFont.draw(batch, "Score: " + score, 0, BetterBreakout.GAME_HEIGHT - 2);
     }
 
-    private boolean isColliding(Sprite s1, Sprite s2) {
+    public static boolean isColliding(Sprite s1, Sprite s2) {
         float xDis = Math.abs((s1.getX() + s1.getWidth() / 2) - (s2.getX() + s2.getWidth() / 2));
         float yDis = Math.abs((s1.getY() + s1.getHeight() / 2) - (s2.getY() + s2.getHeight() / 2));
 
@@ -252,7 +257,28 @@ public class Game {
     }
 
     private void onPowerUp(PowerUp powerUp) {
-        switch(powerUp.getPower()) {
+        List<PowerUp.Power> allowedPowerups = new ArrayList<PowerUp.Power>(Arrays.asList(PowerUp.POWERS));
+        int extraBallCount = 0;
+        for(PowerUp.Power p : Game.activePowerups) {
+            if(p == PowerUp.Power.ADDBALL) {
+                extraBallCount++;
+            } else if(p == PowerUp.Power.SMALLPADDLE || p == PowerUp.Power.LARGEPADDLE) {
+                allowedPowerups.remove(PowerUp.Power.LARGEPADDLE);
+                allowedPowerups.remove(PowerUp.Power.SMALLPADDLE);
+            } else if(p == PowerUp.Power.SHOTGUN) {
+                allowedPowerups.remove(PowerUp.Power.SHOTGUN);
+            } else if(p == PowerUp.Power.PADDLE_EFFICIENCY) {
+                allowedPowerups.remove(PowerUp.Power.PADDLE_EFFICIENCY);
+            } else if(p == PowerUp.Power.PADDLE_SPEED) {
+                allowedPowerups.remove(PowerUp.Power.PADDLE_SPEED);
+            }
+            if(extraBallCount == 3) {
+                allowedPowerups.remove(PowerUp.Power.ADDBALL);
+            }
+        }
+
+        PowerUp.Power p = allowedPowerups.get((int) (Math.random() * allowedPowerups.size()));
+        switch(p) {
             case ADDBALL:
                 Ball b = new Ball(15, paddle.getX(), 110, brickTexture);
                 balls.add(b);
@@ -310,8 +336,8 @@ public class Game {
                 }, 10000);
                 break;
             case PADDLE_EFFICIENCY:
-                switch((int)(Math.random() * 6)) {
-                    case 0:case 4:
+                switch((int)(Math.random() * 4)) {
+                    case 0:
                         paddle.setEfficiency(Paddle.Efficiency.TERRIBLE);
                         TimeUtil.doLater(new Runnable() {
                             @Override
@@ -320,7 +346,7 @@ public class Game {
                             }
                         }, 15000);
                         break;
-                    case 1:case 5:
+                    case 1:
                         paddle.setEfficiency(Paddle.Efficiency.BAD);
                         TimeUtil.doLater(new Runnable() {
                             @Override

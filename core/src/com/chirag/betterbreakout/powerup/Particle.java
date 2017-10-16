@@ -1,34 +1,62 @@
 package com.chirag.betterbreakout.powerup;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.chirag.betterbreakout.*;
+import com.chirag.betterbreakout.BetterBreakout;
+import com.chirag.betterbreakout.DeleteableGameElement;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class Particle extends MovingGameElement {
+public class Particle implements DeleteableGameElement {
     public enum ParticleType {
        EXPLOSION, BULLET
     }
 
     private ParticleType mParticleType;
-    private static Map<ParticleType, Texture> TEXTURES = new HashMap<ParticleType, Texture>();
-    private static Map<ParticleType, Float> HEIGHTS = new HashMap<ParticleType, Float>();
-    private static Map<ParticleType, Float> WIDTHS = new HashMap<ParticleType, Float>();
+
+    private float mX;
+    private float mY;
+    private float mYVel;
+    private float mXVel;
+    private Color mColor;
+    private boolean mIsDead;
 
     Particle(float x, float y, float XVel, float YVel, ParticleType type, Color color) {
-        super(TEXTURES.get(type), x, y, WIDTHS.get(type), HEIGHTS.get(type), XVel, YVel);
+        mX = x;
+        mY = y;
+        mXVel = XVel;
+        mYVel = YVel;
+        mColor = color;
 
+        mIsDead = false;
         mParticleType = type;
-        mSprite.setColor(color);
+    }
+
+    public float getX() {
+        return mX;
+    }
+
+    public float getY() {
+        return mY;
+    }
+
+    public boolean isDead() {
+        return mIsDead;
+    }
+
+    public void setDead(boolean isDead) {
+        mIsDead = isDead;
+    }
+
+    public Color getColor() {
+        return mColor;
     }
 
     public void update() {
         mYVel -= 0.25f;
-        super.update();
+        mX += mXVel;
+        mY += mYVel;
 
+        if(mX < 0 || mX > BetterBreakout.GAME_WIDTH || mY < 0 || mY > BetterBreakout.GAME_HEIGHT) {
+            mIsDead = true;
+        }
     }
 
     public ParticleType getParticleType() {
@@ -36,11 +64,6 @@ public class Particle extends MovingGameElement {
     }
 
     public static void loadAllTextures() {
-        TEXTURES.put(ParticleType.EXPLOSION, new Texture(Gdx.files.internal("brick.png")));
-        HEIGHTS.put(ParticleType.EXPLOSION, 12f);
-        WIDTHS.put(ParticleType.EXPLOSION, 12f);
-        TEXTURES.put(ParticleType.BULLET, new Texture(Gdx.files.internal("brick.png")));
-        HEIGHTS.put(ParticleType.BULLET, 5f);
-        WIDTHS.put(ParticleType.BULLET, 5f);
+
     }
 }

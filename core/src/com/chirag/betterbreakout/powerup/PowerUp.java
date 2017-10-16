@@ -15,7 +15,7 @@ public class PowerUp implements DeleteableGameElement {
         ADDBALL, LARGEPADDLE, SMALLPADDLE, LASER, SHOTGUN, RANDOM, PADDLE_EFFICIENCY, PADDLE_SPEED
     }
 
-    private static final Power[] POWERS = {Power.PADDLE_SPEED, Power.ADDBALL, Power.LARGEPADDLE, Power.SMALLPADDLE, Power.LASER, Power.SHOTGUN, Power.PADDLE_EFFICIENCY};
+    public static final Power[] POWERS = {Power.PADDLE_SPEED, Power.ADDBALL, Power.LARGEPADDLE, Power.SMALLPADDLE, Power.LASER, Power.SHOTGUN, Power.PADDLE_EFFICIENCY};
     private Power mPower;
     private Sprite mSprite;
     private float mX;
@@ -28,32 +28,28 @@ public class PowerUp implements DeleteableGameElement {
         mIsDead = false;
         mX = x;
         mY = y;
+        this.mPower = power;
 
-        if(power != Power.RANDOM) {
-            this.mPower = power;
-        } else {
-            List<Power> allowedPowerups = new ArrayList<Power>(Arrays.asList(POWERS));
-            int extraBallCount = 0;
-            for(Power p : Game.activePowerups) {
-                if(p == Power.ADDBALL) {
-                    extraBallCount++;
-                } else if(p == Power.SMALLPADDLE || p == Power.LARGEPADDLE) {
-                    allowedPowerups.remove(Power.LARGEPADDLE);
-                    allowedPowerups.remove(Power.SMALLPADDLE);
-                } else if(p == Power.SHOTGUN) {
-                    allowedPowerups.remove(Power.SHOTGUN);
-                } else if(p == Power.PADDLE_EFFICIENCY) {
-                    allowedPowerups.remove(Power.PADDLE_EFFICIENCY);
-                } else if(p == Power.PADDLE_SPEED) {
-                    allowedPowerups.remove(Power.PADDLE_SPEED);
-                }
-                if(extraBallCount == 3) {
-                    allowedPowerups.remove(Power.ADDBALL);
-                }
+        List<Power> allowedPowerups = new ArrayList<Power>(Arrays.asList(POWERS));
+        int extraBallCount = 0;
+        for(Power p : Game.activePowerups) {
+            if(p == Power.ADDBALL) {
+                extraBallCount++;
+            } else if(p == Power.SMALLPADDLE || p == Power.LARGEPADDLE) {
+                allowedPowerups.remove(Power.LARGEPADDLE);
+                allowedPowerups.remove(Power.SMALLPADDLE);
+            } else if(p == Power.SHOTGUN) {
+                allowedPowerups.remove(Power.SHOTGUN);
+            } else if(p == Power.PADDLE_EFFICIENCY) {
+                allowedPowerups.remove(Power.PADDLE_EFFICIENCY);
+            } else if(p == Power.PADDLE_SPEED) {
+                allowedPowerups.remove(Power.PADDLE_SPEED);
             }
-            mPower = allowedPowerups.get((int)(Math.random() * allowedPowerups.size()));
+            if(extraBallCount == 3) {
+                allowedPowerups.remove(Power.ADDBALL);
+            }
         }
-
+        mPower = allowedPowerups.get((int) (Math.random() * allowedPowerups.size()));
     }
 
     //Getters

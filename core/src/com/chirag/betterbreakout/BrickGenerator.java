@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -20,7 +18,6 @@ public class BrickGenerator {
     private Random mRandom;
     private boolean mIsStopped;
 
-    private static final int TOP_PADDING = 120;
     private final Color[] RAINBOW = {Color.RED, Color.ORANGE, Color.GOLD, Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.PURPLE, Color.PINK, Color.WHITE};
 
     BrickGenerator(Texture brickTexture) {
@@ -72,21 +69,17 @@ public class BrickGenerator {
         mBricks.add(new Brick(mBrickTexture, x, y, color, this));
     }
 
-    public void remove(Brick b) {
-        mBricks.remove(b);
-    }
-
     void removeAll(List<Brick> b) {
         mBricks.removeAll(b);
     }
 
-    void addNewRow() {
+    private void addNewRow() {
         int widthBricks = 20;
         int brickPadding = 10;
-        int sidePadding = (BetterBreakout.GAME_WIDTH - Brick.WIDTH * widthBricks + (widthBricks-1) * brickPadding) / 2;
+        //int sidePadding = (BetterBreakout.GAME_WIDTH - Brick.WIDTH * widthBricks + (widthBricks-1) * brickPadding) / 2;
         int rowHeight = Brick.HEIGHT + brickPadding;
         int brickLossChance = Math.max(0, (int)(65 - mCurrentRow * 2.1));
-        for(int i = sidePadding; i <= BetterBreakout.GAME_WIDTH - sidePadding; i += Brick.WIDTH + brickPadding) {
+        for(int i = 0; i <= BetterBreakout.GAME_WIDTH; i += Brick.WIDTH + brickPadding) {
             if(mRandom.nextInt(100) < brickLossChance) continue;
             add(i, rowHeight * mCurrentRow, RAINBOW[RAINBOW.length - mCurrentRow % RAINBOW.length - 1]);
         }
