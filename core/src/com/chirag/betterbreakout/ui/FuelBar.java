@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.chirag.betterbreakout.BetterBreakout;
 
-public class FuelBar {
+public class FuelBar implements BaseUiElement {
     private float mHeight;
     private float mWidth;
     private float mX;
@@ -18,7 +18,7 @@ public class FuelBar {
 
     public FuelBar(Texture texture, float maxFuel) {
         mWidth = 40;
-        mX = 0;
+        mX = BetterBreakout.GAME_WIDTH + BetterBreakout.GAME_PADDING - mWidth;
         mY = 0;
         mHeight = BetterBreakout.GAME_HEIGHT - mY;
         mMaxFuel = maxFuel;
@@ -30,6 +30,10 @@ public class FuelBar {
         mBarSprite.setColor(Color.BLUE);
     }
 
+    public float getWidth() {
+        return mWidth;
+    }
+
     public void setMaxFuel(float amt) {
         mMaxFuel = amt;
     }
@@ -38,6 +42,7 @@ public class FuelBar {
         mFuel = Math.min(amt, mMaxFuel);
     }
 
+    @Override
     public void draw(SpriteBatch batch) {
         mHolderSprite.draw(batch);
         mBarSprite.setBounds(mX, mY, mWidth, mFuel / mMaxFuel * mHeight);

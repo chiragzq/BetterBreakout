@@ -11,6 +11,7 @@ import com.chirag.betterbreakout.powerup.Laser;
 import com.chirag.betterbreakout.powerup.Particle;
 import com.chirag.betterbreakout.powerup.PowerUp;
 import com.chirag.betterbreakout.ui.FuelBar;
+import com.chirag.betterbreakout.ui.PowerUpIcon;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +35,8 @@ public class Game {
     private List<Laser> lasers;
     private List<Explosion> explosions;
     private List<Bullet> bullets;
-    public static List<PowerUp.Power> activePowerups = new ArrayList<PowerUp.Power>();
+    private List<PowerUp.Power> activePowerups = new ArrayList<PowerUp.Power>();
+    private List<PowerUpIcon> powerIcons;
 
     Game(Texture brickTexture, Texture powerTexture) {
         this.powerTexture = powerTexture;
@@ -55,6 +57,7 @@ public class Game {
         score = 0;
         glyphLayout = new GlyphLayout();
         activePowerups.add(PowerUp.Power.ADDBALL);
+        powerIcons = new ArrayList<PowerUpIcon>();
     }
 
     void update() {
@@ -207,8 +210,19 @@ public class Game {
                     (BetterBreakout.GAME_WIDTH - glyphLayout.width) / 2,
                     BetterBreakout.GAME_HEIGHT/2 + glyphLayout.height
             );
+            powerIcons.clear();
         } else {
             mFuelBar.draw(batch);
+            ArrayList<PowerUpIcon> toDelIcon = new ArrayList<PowerUpIcon>();
+            for(PowerUpIcon icon : powerIcons) {
+                if(icon.isExpired()) {
+                    toDelIcon.add(icon);
+                }
+            }
+            powerIcons.removeAll(toDelIcon);
+            for(int i = 0; i < powerIcons.size(); i ++) {
+                powerIcons.get(i).draw(batch, BetterBreakout.GAME_WIDTH + 25 + (25 + PowerUpIcon.ICON_SIDE)* i, 800);
+            }
         }
         bitmapFont.draw(batch, "Score: " + score, 0, BetterBreakout.GAME_HEIGHT - 2);
     }
@@ -259,7 +273,7 @@ public class Game {
     private void onPowerUp(PowerUp powerUp) {
         List<PowerUp.Power> allowedPowerups = new ArrayList<PowerUp.Power>(Arrays.asList(PowerUp.POWERS));
         int extraBallCount = 0;
-        for(PowerUp.Power p : Game.activePowerups) {
+        for(PowerUp.Power p : activePowerups) {
             if(p == PowerUp.Power.ADDBALL) {
                 extraBallCount++;
             } else if(p == PowerUp.Power.SMALLPADDLE || p == PowerUp.Power.LARGEPADDLE) {
@@ -267,6 +281,8 @@ public class Game {
                 allowedPowerups.remove(PowerUp.Power.SMALLPADDLE);
             } else if(p == PowerUp.Power.SHOTGUN) {
                 allowedPowerups.remove(PowerUp.Power.SHOTGUN);
+            } else if(p == PowerUp.Power.LASER) {
+                allowedPowerups.remove(PowerUp.Power.LASER);
             } else if(p == PowerUp.Power.PADDLE_EFFICIENCY) {
                 allowedPowerups.remove(PowerUp.Power.PADDLE_EFFICIENCY);
             } else if(p == PowerUp.Power.PADDLE_SPEED) {
@@ -292,7 +308,8 @@ public class Game {
                     public void run() {
                         activePowerups.remove(PowerUp.Power.LARGEPADDLE);
                     }
-                }, 8000);
+                }, 10000);
+                powerIcons.add(new PowerUpIcon(p, 8000));
                 break;
             case SMALLPADDLE:
                 paddle.setState(Paddle.State.SMALL, 8000);
@@ -302,11 +319,19 @@ public class Game {
                     public void run() {
                         activePowerups.remove(PowerUp.Power.SMALLPADDLE);
                     }
-                }, 8000);
+                }, 10000);
+                powerIcons.add(new PowerUpIcon(p, 8000));
                 break;
             case LASER:
                 lasers.add(new Laser(brickTexture, powerUp.getX()));
                 lasers.get(lasers.size() - 1).activate();
+                TimeUtil.doLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        activePowerups.remove(PowerUp.Power.LASER);
+                    }
+                }, 2000);
+                powerIcons.add(new PowerUpIcon(p, 2000));
                 break;
             case SHOTGUN:
                 for(int i = 0; i < 8; i++) {
@@ -318,7 +343,8 @@ public class Game {
                     public void run() {
                         activePowerups.remove(PowerUp.Power.SHOTGUN);
                     }
-                }, 10000);
+                }, 5000);
+                powerIcons.add(new PowerUpIcon(p, 5000));
                 break;
             case PADDLE_SPEED:
                 if(Math.random() > 0.5) {
@@ -333,7 +359,8 @@ public class Game {
                         paddle.setSpeed(10);
                         activePowerups.remove(PowerUp.Power.PADDLE_SPEED);
                     }
-                }, 10000);
+                }, 12000);
+                powerIcons.add(new PowerUpIcon(p, 10000));
                 break;
             case PADDLE_EFFICIENCY:
                 switch((int)(Math.random() * 4)) {
@@ -379,7 +406,8 @@ public class Game {
                     public void run() {
                         activePowerups.remove(PowerUp.Power.PADDLE_EFFICIENCY);
                     }
-                }, 15100);
+                }, 17000);
+                powerIcons.add(new PowerUpIcon(p, 15000));
         }
     }
 
@@ -393,7 +421,6 @@ public class Game {
                 brick.gotHit();
                 if(Math.random() > 0.4) {
                     powerUps.add(new PowerUp(
-                            PowerUp.Power.RANDOM,
                             powerTexture,
                             (int) brick.getX(),
                             (int) brick.getY(),
@@ -410,7 +437,6 @@ public class Game {
                 brick.gotHit();
                 if(Math.random() > 0.4) {
                     powerUps.add(new PowerUp(
-                            PowerUp.Power.RANDOM,
                             powerTexture,
                             (int) brick.getX(),
                             (int) brick.getY(),

@@ -61,7 +61,7 @@ public class Paddle implements Rectangular{
         mX = BetterBreakout.GAME_WIDTH/2;
         mY = y;
         mWidth = WIDTHS.get(State.NORMAL);
-        mFuel = 5000;
+        mFuel = 10001;
         mMaxFuel = 10000;
         mSpeed = 15;
 
@@ -120,6 +120,7 @@ public class Paddle implements Rectangular{
     }
 
     void update() {
+        mFuel = 8000;
         if(mFuel > mSpeed && ControlsUtil.direction != 0) {
             mFuel -= mSpeed * FUEL_MULTIPLIER.get(mEfficiency) * SIZE_MULTIPLIER.get(mState);
             mX += ControlsUtil.direction * mSpeed;

@@ -74,15 +74,116 @@ public class BrickGenerator {
     }
 
     private void addNewRow() {
-        int widthBricks = 20;
+        int widthBricks = 13;
         int brickPadding = 10;
         //int sidePadding = (BetterBreakout.GAME_WIDTH - Brick.WIDTH * widthBricks + (widthBricks-1) * brickPadding) / 2;
         int rowHeight = Brick.HEIGHT + brickPadding;
         int brickLossChance = Math.max(0, (int)(65 - mCurrentRow * 2.1));
-        for(int i = 0; i <= BetterBreakout.GAME_WIDTH; i += Brick.WIDTH + brickPadding) {
+        for(int i = Brick.WIDTH/2 + brickPadding; i <= BetterBreakout.GAME_WIDTH - Brick.WIDTH/2 - brickPadding; i += Brick.WIDTH + brickPadding) {
             if(mRandom.nextInt(100) < brickLossChance) continue;
             add(i, rowHeight * mCurrentRow, RAINBOW[RAINBOW.length - mCurrentRow % RAINBOW.length - 1]);
         }
         mCurrentRow++;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
