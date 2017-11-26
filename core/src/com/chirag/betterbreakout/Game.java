@@ -1,5 +1,6 @@
 package com.chirag.betterbreakout;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -185,6 +186,9 @@ class Game {
     }
 
     void draw(BitmapFont bitmapFont, BitmapFont smallFont, SpriteBatch batch) {
+        batch.setColor(127/256f, 96/256f, 0, 1);
+        batch.draw(new Texture("sidebarbackground.png"), BetterBreakout.GAME_WIDTH, 0, BetterBreakout.GAME_PADDING, BetterBreakout.GAME_HEIGHT);
+        batch.setColor(Color.WHITE);
         bricks.draw(batch);
         paddle.draw(batch);
         for(Laser r : lasers) {
@@ -203,7 +207,6 @@ class Game {
             b.draw(batch);
         }
         if(isReset) {
-            glyphLayout.setText(bitmapFont, "You Lose");
             bitmapFont.draw(
                     batch,
                     "You Lose",
@@ -221,10 +224,11 @@ class Game {
             }
             powerIcons.removeAll(toDelIcon);
             for(int i = 0; i < powerIcons.size(); i ++) {
-                powerIcons.get(i).draw(batch, BetterBreakout.GAME_WIDTH + 25, 900 - (25 + PowerUpIcon.ICON_SIDE) * i);
+                powerIcons.get(i).draw(batch, BetterBreakout.GAME_WIDTH + 50, 900 - (25 + PowerUpIcon.ICON_SIDE) * i);
             }
         }
-        smallFont.draw(batch, "Score: " + score, 1700, BetterBreakout.GAME_HEIGHT - 2);
+        glyphLayout.setText(smallFont, "Score: " + score);
+        smallFont.draw(batch, "Score: " + score, 1790 - glyphLayout.width/2, BetterBreakout.GAME_HEIGHT - 10);
     }
 
     public static boolean isColliding(Sprite s1, Sprite s2) {

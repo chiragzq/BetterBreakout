@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
 class Brick implements DeleteableGameElement, Rectangular {
-    static final int WIDTH = 100;
-    static final int HEIGHT = 25;
+    static final int WIDTH = 138;
+    static final int HEIGHT = 35;
 
     private Sprite mSprite;
     private boolean mIsDead;

@@ -18,7 +18,16 @@ public class BrickGenerator {
     private Random mRandom;
     private boolean mIsStopped;
 
-    private final Color[] RAINBOW = {Color.RED, Color.ORANGE, Color.GOLD, Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.PURPLE, Color.PINK, Color.WHITE};
+    private final Color[] RAINBOW = {
+            new Color(1, 0.1f, 0.1f, 1),
+            new Color(1, 0.65f, 0.1f, 1),
+            Color.YELLOW,
+            Color.GREEN,
+            new Color(0.1f, 1, 1, 1),
+            new Color(0.1f, 0.1f, 1,1),
+            Color.PURPLE,
+            Color.PINK,
+            Color.WHITE};
 
     BrickGenerator(Texture brickTexture) {
         mRandom = new Random();
@@ -49,7 +58,7 @@ public class BrickGenerator {
             b.update();
         }
 
-        int rowHeight = Brick.HEIGHT + 10;
+        int rowHeight = Brick.HEIGHT + 12;
         while(mCurrentRow * rowHeight + mBottomY < BetterBreakout.GAME_HEIGHT + Brick.HEIGHT && !mIsStopped) {
             addNewRow();
         }
@@ -74,9 +83,7 @@ public class BrickGenerator {
     }
 
     private void addNewRow() {
-        int widthBricks = 13;
-        int brickPadding = 10;
-        //int sidePadding = (BetterBreakout.GAME_WIDTH - Brick.WIDTH * widthBricks + (widthBricks-1) * brickPadding) / 2;
+        int brickPadding = 13;
         int rowHeight = Brick.HEIGHT + brickPadding;
         int brickLossChance = Math.max(0, (int)(65 - mCurrentRow * 2.1));
         for(int i = Brick.WIDTH/2 + brickPadding; i <= BetterBreakout.GAME_WIDTH - Brick.WIDTH/2 - brickPadding; i += Brick.WIDTH + brickPadding) {

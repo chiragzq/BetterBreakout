@@ -1,13 +1,13 @@
 package com.chirag.betterbreakout.ui;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.chirag.betterbreakout.powerup.PowerUp;
 
 public class PowerUpIcon  {
-    public static final float ICON_SIDE = 75;
-    private Sprite timeLeftSprite;
+    public static final float ICON_SIDE = 100;
+    private Texture timeLeftTexture;
     private long mDuration;
     private long expireTime;
     private Texture mTexture;
@@ -47,8 +47,7 @@ public class PowerUpIcon  {
         mTexture = new Texture(path);
         expireTime = System.currentTimeMillis() + duration;
         mDuration = duration;
-        timeLeftSprite = new Sprite(new Texture("brick.png"));
-        timeLeftSprite.setColor(0, 0, 1, 0.5f);
+        timeLeftTexture = new Texture("solid.png");
     }
 
     public boolean isExpired() {
@@ -56,10 +55,14 @@ public class PowerUpIcon  {
     }
 
     public void draw(SpriteBatch batch, float x, float y) {
-        batch.draw(mTexture, x, y, ICON_SIDE, ICON_SIDE);
+        batch.setColor(211/256f, 164/256f, 0.2f, 1);
+        batch.draw(timeLeftTexture, x, y, ICON_SIDE, ICON_SIDE);
+        batch.setColor(Color.WHITE);
         if(!isExpired()) {
-            timeLeftSprite.setBounds(x, y, ICON_SIDE, (expireTime - System.currentTimeMillis()) / (float)mDuration * ICON_SIDE);
-            timeLeftSprite.draw(batch);
+            batch.setColor(0.2f, 0.2f, 1, 1);
+            batch.draw(timeLeftTexture, x, y, ICON_SIDE, (expireTime - System.currentTimeMillis()) / (float)mDuration * ICON_SIDE);
+            batch.setColor(Color.WHITE);
         }
+        batch.draw(mTexture, x, y, ICON_SIDE, ICON_SIDE);
     }
 }
