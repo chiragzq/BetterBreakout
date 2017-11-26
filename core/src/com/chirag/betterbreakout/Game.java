@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Game {
+class Game {
     public enum Side {
         TOP, BOTTOM, LEFT, RIGHT, NONE
     }
@@ -184,7 +184,7 @@ public class Game {
         }
     }
 
-    void draw(BitmapFont bitmapFont, SpriteBatch batch) {
+    void draw(BitmapFont bitmapFont, BitmapFont smallFont, SpriteBatch batch) {
         bricks.draw(batch);
         paddle.draw(batch);
         for(Laser r : lasers) {
@@ -221,10 +221,10 @@ public class Game {
             }
             powerIcons.removeAll(toDelIcon);
             for(int i = 0; i < powerIcons.size(); i ++) {
-                powerIcons.get(i).draw(batch, BetterBreakout.GAME_WIDTH + 25 + (25 + PowerUpIcon.ICON_SIDE)* i, 800);
+                powerIcons.get(i).draw(batch, BetterBreakout.GAME_WIDTH + 25, 900 - (25 + PowerUpIcon.ICON_SIDE) * i);
             }
         }
-        bitmapFont.draw(batch, "Score: " + score, 0, BetterBreakout.GAME_HEIGHT - 2);
+        smallFont.draw(batch, "Score: " + score, 1700, BetterBreakout.GAME_HEIGHT - 2);
     }
 
     public static boolean isColliding(Sprite s1, Sprite s2) {
@@ -244,7 +244,7 @@ public class Game {
      * @param rect the one getting hit
      * @return which side on brick was hit by ball
      */
-    public static Side getCollisionSide(MovingGameElement ball, Rectangular rect) {
+    private static Side getCollisionSide(MovingGameElement ball, Rectangular rect) {
         float xDis = Math.abs((ball.getX()) - (rect.getX()));
         float yDis = Math.abs((ball.getY()) - (rect.getY()));
 
@@ -309,7 +309,7 @@ public class Game {
                         activePowerups.remove(PowerUp.Power.LARGEPADDLE);
                     }
                 }, 10000);
-                powerIcons.add(new PowerUpIcon(p, 8000));
+                powerIcons.add(new PowerUpIcon(p, 0, 8000));
                 break;
             case SMALLPADDLE:
                 paddle.setState(Paddle.State.SMALL, 8000);
@@ -320,7 +320,7 @@ public class Game {
                         activePowerups.remove(PowerUp.Power.SMALLPADDLE);
                     }
                 }, 10000);
-                powerIcons.add(new PowerUpIcon(p, 8000));
+                powerIcons.add(new PowerUpIcon(p, 0, 8000));
                 break;
             case LASER:
                 lasers.add(new Laser(brickTexture, powerUp.getX()));
@@ -331,7 +331,7 @@ public class Game {
                         activePowerups.remove(PowerUp.Power.LASER);
                     }
                 }, 2000);
-                powerIcons.add(new PowerUpIcon(p, 2000));
+                powerIcons.add(new PowerUpIcon(p, 0, 2000));
                 break;
             case SHOTGUN:
                 for(int i = 0; i < 8; i++) {
@@ -344,12 +344,15 @@ public class Game {
                         activePowerups.remove(PowerUp.Power.SHOTGUN);
                     }
                 }, 5000);
-                powerIcons.add(new PowerUpIcon(p, 5000));
+                powerIcons.add(new PowerUpIcon(p, 0, 5000));
                 break;
             case PADDLE_SPEED:
                 if(Math.random() > 0.5) {
+                    powerIcons.add(new PowerUpIcon(p, 1, 10000));
                     paddle.setSpeed(19.5f);
                 } else {
+                    powerIcons.add(new PowerUpIcon(p, 0, 10000));
+
                     paddle.setSpeed(12f);
                 }
                 activePowerups.add(PowerUp.Power.PADDLE_SPEED);
@@ -360,7 +363,6 @@ public class Game {
                         activePowerups.remove(PowerUp.Power.PADDLE_SPEED);
                     }
                 }, 12000);
-                powerIcons.add(new PowerUpIcon(p, 10000));
                 break;
             case PADDLE_EFFICIENCY:
                 switch((int)(Math.random() * 4)) {
@@ -372,6 +374,8 @@ public class Game {
                                 paddle.setEfficiency(Paddle.Efficiency.NORMAL);
                             }
                         }, 15000);
+                        powerIcons.add(new PowerUpIcon(p, 0, 10000));
+
                         break;
                     case 1:
                         paddle.setEfficiency(Paddle.Efficiency.BAD);
@@ -381,6 +385,8 @@ public class Game {
                                 paddle.setEfficiency(Paddle.Efficiency.NORMAL);
                             }
                         }, 15000);
+                        powerIcons.add(new PowerUpIcon(p, 1, 10000));
+
                         break;
                     case 2:
                         paddle.setEfficiency(Paddle.Efficiency.GOOD);
@@ -390,6 +396,7 @@ public class Game {
                                 paddle.setEfficiency(Paddle.Efficiency.NORMAL);
                             }
                         }, 15000);
+                        powerIcons.add(new PowerUpIcon(p, 2, 10000));
                         break;
                     case 3:
                         paddle.setEfficiency(Paddle.Efficiency.AMAZING);
@@ -399,6 +406,8 @@ public class Game {
                                 paddle.setEfficiency(Paddle.Efficiency.NORMAL);
                             }
                         }, 15000);
+                        powerIcons.add(new PowerUpIcon(p, 3, 10000));
+
                 }
                 activePowerups.add(PowerUp.Power.PADDLE_EFFICIENCY);
                 TimeUtil.doLater(new Runnable() {
@@ -407,7 +416,6 @@ public class Game {
                         activePowerups.remove(PowerUp.Power.PADDLE_EFFICIENCY);
                     }
                 }, 17000);
-                powerIcons.add(new PowerUpIcon(p, 15000));
         }
     }
 

@@ -7,7 +7,7 @@ import com.chirag.betterbreakout.DeleteableGameElement;
 
 public class PowerUp implements DeleteableGameElement {
     public enum Power {
-        ADDBALL, LARGEPADDLE, SMALLPADDLE, LASER, SHOTGUN, RANDOM, PADDLE_EFFICIENCY, PADDLE_SPEED
+        ADDBALL, LARGEPADDLE, SMALLPADDLE, LASER, SHOTGUN, PADDLE_EFFICIENCY, PADDLE_SPEED
     }
 
     public static final Power[] POWERS = {Power.PADDLE_SPEED, Power.ADDBALL, Power.LARGEPADDLE, Power.SMALLPADDLE, Power.LASER, Power.SHOTGUN, Power.PADDLE_EFFICIENCY};

@@ -17,8 +17,9 @@ public class BetterBreakout extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private Game game;
 	private BitmapFont bitmapFont;
-	public static final int GAME_WIDTH = 1440;
-	public static final int GAME_PADDING = 480;
+	private BitmapFont smallFont;
+	public static final int GAME_WIDTH = 1680;
+	public static final int GAME_PADDING = 240;
 	public static final int GAME_HEIGHT = 1080;
 
 	public BetterBreakout(int device) {
@@ -35,6 +36,7 @@ public class BetterBreakout extends ApplicationAdapter {
 		transform.scale(1/scaleMult, 1/scaleMult,1/scaleMult);
 		batch.setTransformMatrix(transform);
 		bitmapFont = new BitmapFont(Gdx.files.internal("font.fnt"));
+		smallFont = new BitmapFont(Gdx.files.internal("smallfont.fnt"));
 	}
 
 	@Override
@@ -52,7 +54,7 @@ public class BetterBreakout extends ApplicationAdapter {
 		sideBarBackground.end();
 		batch.begin();
 
-		game.draw(bitmapFont, batch);
+		game.draw(bitmapFont, smallFont, batch);
 
 		batch.end();
 

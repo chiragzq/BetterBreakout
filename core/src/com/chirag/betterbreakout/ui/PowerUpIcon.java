@@ -12,9 +12,39 @@ public class PowerUpIcon  {
     private long expireTime;
     private Texture mTexture;
 
-    public PowerUpIcon(PowerUp.Power powerUp, int duration) {
-        mTexture = new Texture("icon_" + //powerUp.toString()); //TODO
-                "test.png");
+    public PowerUpIcon(PowerUp.Power powerUp, int power, int duration) {
+        String path = "icon_test";
+        if(
+                powerUp == PowerUp.Power.SMALLPADDLE ||
+                powerUp == PowerUp.Power.LARGEPADDLE ||
+                powerUp == PowerUp.Power.LASER ||
+                powerUp == PowerUp.Power.SHOTGUN
+                ) {
+            path = "icon_" + powerUp.toString() + ".png";
+        } else {
+            if(powerUp == PowerUp.Power.PADDLE_EFFICIENCY) {
+                switch(power) {
+                    case 0:
+                        path = "icon_TERRIBLEFUELEFFECIENCY.png";
+                        break;
+                    case 1:
+                        path = "icon_BADFUELEFFECIENCY.png";
+                        break;
+                    case 2:
+                        path = "icon_GOODFUELEFFECIENCY.png";
+                        break;
+                    case 3:
+                        path = "icon_AMAZINGFUELEFFECIENCY.png";
+                        break;
+                }
+            } else {
+                if(power == 0) {
+                    path = "icon_BADPADDLESPEED.png";
+                }
+                path = "icon_GOODPADDLESPEED.png";
+            }
+        }
+        mTexture = new Texture(path);
         expireTime = System.currentTimeMillis() + duration;
         mDuration = duration;
         timeLeftSprite = new Sprite(new Texture("brick.png"));
