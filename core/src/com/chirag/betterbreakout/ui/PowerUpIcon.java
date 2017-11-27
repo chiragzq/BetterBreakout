@@ -17,10 +17,12 @@ public class PowerUpIcon  {
         if(
                 powerUp == PowerUp.Power.SMALLPADDLE ||
                 powerUp == PowerUp.Power.LARGEPADDLE ||
-                powerUp == PowerUp.Power.LASER ||
+                //powerUp == PowerUp.Power.LASER ||
                 powerUp == PowerUp.Power.SHOTGUN
                 ) {
             path = "icon_" + powerUp.toString() + ".png";
+        } else if(powerUp == PowerUp.Power.LASER) {
+            path = "icon_LASER2.png";
         } else {
             if(powerUp == PowerUp.Power.PADDLE_EFFICIENCY) {
                 switch(power) {

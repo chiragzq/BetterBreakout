@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.chirag.betterbreakout.powerup.Particle;
 
@@ -44,9 +43,8 @@ public class BetterBreakout extends ApplicationAdapter {
 		TimeUtil.update();
 		ControlsUtil.update();
 
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClearColor(0.08f, 0.08f, 0.05f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		ShapeRenderer sideBarBackground = new ShapeRenderer();
 		batch.begin();
 
 		game.draw(bitmapFont, smallFont, batch);
