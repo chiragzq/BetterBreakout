@@ -43,7 +43,7 @@ public class Explosion implements DeleteableGameElement {
         mParticles = new ArrayList<Particle>();
         mParticleType = particleType;
         Random random = new Random();
-        for(int i = 0; i < particleNums.get(particleType) * (-3 / 5.0 * BetterBreakout.deviceType + 1); i ++) {
+        for(int i = 0; i < particleNums.get(particleType) * (-1 / 5.0 * BetterBreakout.deviceType + 1); i ++) {
             float xVel = random.nextFloat() * 7 - 4;
             float yVel = random.nextFloat() * 7 - 4;
 
@@ -63,7 +63,7 @@ public class Explosion implements DeleteableGameElement {
             doParticlePaddleCollision(particle, paddle);
             if(particle.isDead()) {
                 toDelParticle.add(particle);
-                paddle.addFuel((int)(fuelAmounts.get(mParticleType) * (3 / 2.0 * BetterBreakout.deviceType + 1)));
+                paddle.addFuel((int)(fuelAmounts.get(mParticleType) * (1 / 4.0 * BetterBreakout.deviceType + 1)));
             }
         }
         mParticles.removeAll(toDelParticle);

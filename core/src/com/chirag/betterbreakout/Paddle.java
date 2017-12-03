@@ -120,10 +120,14 @@ public class Paddle implements Rectangular{
     }
 
     void update() {
-        mFuel = 8000;
         if(mFuel > mSpeed && ControlsUtil.direction != 0) {
-            mFuel -= mSpeed * FUEL_MULTIPLIER.get(mEfficiency) * SIZE_MULTIPLIER.get(mState);
-            mX += ControlsUtil.direction * mSpeed;
+            if(mX < BetterBreakout.GAME_WIDTH - mWidth / 2 && ControlsUtil.direction == 1) {
+                mFuel -= mSpeed * FUEL_MULTIPLIER.get(mEfficiency) * SIZE_MULTIPLIER.get(mState);
+                mX += ControlsUtil.direction * mSpeed;
+            } else if(mX > mWidth / 2 && ControlsUtil.direction == -1) {
+                mFuel -= mSpeed * FUEL_MULTIPLIER.get(mEfficiency) * SIZE_MULTIPLIER.get(mState);
+                mX += ControlsUtil.direction * mSpeed;
+            }
         }
 
         if(mState != State.NORMAL) {
@@ -133,7 +137,6 @@ public class Paddle implements Rectangular{
                 mSprite.setCenter(mX, mY);
             }
         }
-
         mFuel = Math.max(0, mFuel);
     }
 
