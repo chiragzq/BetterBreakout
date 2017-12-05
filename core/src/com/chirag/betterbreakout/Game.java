@@ -18,14 +18,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-class Game {
+public class Game {
     public enum Side {
         TOP, BOTTOM, LEFT, RIGHT, NONE
     }
 
+    public static int score;
+
     private GlyphLayout glyphLayout;
-    private int score;
-    private boolean isReset;
     private Texture brickTexture;
     private Texture powerTexture;
     private Paddle paddle;
@@ -54,7 +54,6 @@ class Game {
         powerUps = new ArrayList<PowerUp>();
         explosions = new ArrayList<Explosion>();
         bullets = new ArrayList<Bullet>();
-        isReset = false;
         score = 0;
         glyphLayout = new GlyphLayout();
         activePowerups.add(PowerUp.Power.ADDBALL);
@@ -180,13 +179,13 @@ class Game {
         powerUps.removeAll(toDelPowerUp);
         lasers.removeAll(toDelLaser);
         explosions.removeAll(toDelExplosion);
-        if(balls.isEmpty() && !isReset) {
+        if(balls.isEmpty()) {
             lose();
         }
     }
 
-    void draw(BitmapFont bitmapFont, BitmapFont smallFont, SpriteBatch batch) {
-        batch.setColor(127/256f, 96/256f, 0, 1);
+    void draw(BitmapFont smallFont, SpriteBatch batch) {
+        batch.setColor(127 / 256f, 96 / 256f, 0, 1);
         batch.draw(new Texture("sidebarbackground.png"), BetterBreakout.GAME_WIDTH, 0, BetterBreakout.GAME_PADDING, BetterBreakout.GAME_HEIGHT);
         batch.setColor(Color.WHITE);
         bricks.draw(batch);
@@ -206,32 +205,23 @@ class Game {
         for(Bullet b : bullets) {
             b.draw(batch);
         }
-        if(isReset) {
-            bitmapFont.draw(
-                    batch,
-                    "You Lose",
-                    (BetterBreakout.GAME_WIDTH - glyphLayout.width) / 2,
-                    BetterBreakout.GAME_HEIGHT/2 + glyphLayout.height
-            );
-            powerIcons.clear();
-        } else {
-            mFuelBar.draw(batch);
-            ArrayList<PowerUpIcon> toDelIcon = new ArrayList<PowerUpIcon>();
-            for(PowerUpIcon icon : powerIcons) {
-                if(icon.isExpired()) {
-                    toDelIcon.add(icon);
-                }
-            }
-            powerIcons.removeAll(toDelIcon);
-            for(int i = 0; i < powerIcons.size(); i ++) {
-                powerIcons.get(i).draw(batch, BetterBreakout.GAME_WIDTH + 50, 900 - (25 + PowerUpIcon.ICON_SIDE) * i);
+        mFuelBar.draw(batch);
+        ArrayList<PowerUpIcon> toDelIcon = new ArrayList<PowerUpIcon>();
+        for(PowerUpIcon icon : powerIcons) {
+            if(icon.isExpired()) {
+                toDelIcon.add(icon);
             }
         }
+        powerIcons.removeAll(toDelIcon);
+        for(int i = 0; i < powerIcons.size(); i++) {
+            powerIcons.get(i).draw(batch, BetterBreakout.GAME_WIDTH + 50, 900 - (25 + PowerUpIcon.ICON_SIDE) * i);
+        }
+
         glyphLayout.setText(smallFont, "Score: " + score);
-        smallFont.draw(batch, "Score: " + score, 1790 - glyphLayout.width/2, BetterBreakout.GAME_HEIGHT - 10);
+        smallFont.draw(batch, "Score: " + score, 1790 - glyphLayout.width / 2, BetterBreakout.GAME_HEIGHT - 10);
     }
 
-    public static boolean isColliding(Sprite s1, Sprite s2) {
+    private static boolean isColliding(Sprite s1, Sprite s2) {
         float xDis = Math.abs((s1.getX() + s1.getWidth() / 2) - (s2.getX() + s2.getWidth() / 2));
         float yDis = Math.abs((s1.getY() + s1.getHeight() / 2) - (s2.getY() + s2.getHeight() / 2));
 
@@ -462,33 +452,22 @@ class Game {
     }
 
     private void lose() {
-        isReset = true;
-        reset();
-        TimeUtil.doLater(new Runnable() {
-            @Override
-            public void run() {
-                isReset = false;
-                start();
-            }
-        }, 8000);
-    }
+        bricks = new BrickGenerator(brickTexture);
 
-    private void reset() {
-        paddle = new Paddle(brickTexture,-21394);
-        bricks.clearBricks();
-        bricks.stop();
         balls = new ArrayList<Ball>();
-        powerUps = new ArrayList<PowerUp>();
+        paddle = new Paddle(brickTexture, 80);
+        paddle.setMaxFuel(10000);
+        balls.add(new Ball(15, paddle.getX(), 110, brickTexture));
+        mFuelBar = new FuelBar(brickTexture, 10000);
+
         lasers = new ArrayList<Laser>();
+        powerUps = new ArrayList<PowerUp>();
         explosions = new ArrayList<Explosion>();
         bullets = new ArrayList<Bullet>();
-    }
-
-    private void start() {
-        score = 0;
-        bricks = new BrickGenerator(brickTexture);
-        paddle = new Paddle(brickTexture,80);
-        balls.add(new Ball(15, paddle.getX(), 110, brickTexture));
+        glyphLayout = new GlyphLayout();
+        activePowerups.add(PowerUp.Power.ADDBALL);
+        powerIcons = new ArrayList<PowerUpIcon>();
+        BetterBreakout.setCurrentScreen(BetterBreakout.Screen.LOSE);
     }
 }
 

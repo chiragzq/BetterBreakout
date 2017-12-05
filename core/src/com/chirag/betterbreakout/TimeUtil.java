@@ -3,34 +3,48 @@ package com.chirag.betterbreakout;
 import java.util.ArrayList;
 
 public class TimeUtil {
+    static boolean active = false;
+    static long lastTime = System.nanoTime();
+
     private static class Task {
-        long endTime;
+        long duration;
         Runnable runnable;
 
         private Task(long duration, Runnable runnable) {
-            this.endTime = System.currentTimeMillis() + duration;
+            this.duration = duration;
             this.runnable = runnable;
         }
 
+        void elapse(long millis) {
+            duration -= millis;
+        }
+
         boolean isDone() {
-            return System.currentTimeMillis() > endTime;
+            return duration <= 0;
         }
     }
     private static ArrayList<Task> tasks = new ArrayList<Task>();
 
-    public static void doLater(final Runnable run, final int time) {
-        tasks.add(new Task(time, run));
+    static void doLater(final Runnable run, final int duration) {
+        tasks.add(new Task(duration, run));
     }
 
     public static void update() {
-        ArrayList<Task> toDel = new ArrayList<Task>();
-        for(Task t : tasks) {
-            if(t.isDone()) {
-                t.runnable.run();
-                toDel.add(t);
+        if(active) {
+            long currentTime = System.nanoTime();
+            ArrayList<Task> toDel = new ArrayList<Task>();
+            for(Task t : tasks) {
+                t.elapse((currentTime - lastTime) / 1000000);
+                if(t.isDone()) {
+                    t.runnable.run();
+                    toDel.add(t);
+                }
             }
+            tasks.removeAll(toDel);
+            lastTime = currentTime;
+        } else {
+            lastTime = System.nanoTime();
         }
-        tasks.removeAll(toDel);
     }
 }
 

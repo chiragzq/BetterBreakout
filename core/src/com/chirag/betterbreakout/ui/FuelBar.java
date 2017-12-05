@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.chirag.betterbreakout.BetterBreakout;
 
-public class FuelBar implements BaseUiElement {
+public class FuelBar {
     private float mHeight;
     private float mWidth;
     private float mX;
@@ -42,7 +42,6 @@ public class FuelBar implements BaseUiElement {
         mFuel = Math.min(amt, mMaxFuel);
     }
 
-    @Override
     public void draw(SpriteBatch batch) {
         mHolderSprite.draw(batch);
         mBarSprite.setBounds(mX, mY, mWidth, mFuel / mMaxFuel * mHeight);
