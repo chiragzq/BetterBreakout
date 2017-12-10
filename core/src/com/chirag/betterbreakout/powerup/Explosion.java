@@ -24,13 +24,13 @@ public class Explosion implements DeleteableGameElement {
     static {
         particleNums.put(Particle.ParticleType.EXPLOSION, 75);
         particleNums.put(Particle.ParticleType.BULLET, 50);
-        fuelAmounts.put(Particle.ParticleType.EXPLOSION, 50);
-        fuelAmounts.put(Particle.ParticleType.BULLET, 30);
+        fuelAmounts.put(Particle.ParticleType.EXPLOSION, 30);
+        fuelAmounts.put(Particle.ParticleType.BULLET, 15);
 
         Sprite explosionSprite = new Sprite(new Texture(Gdx.files.internal("brick.png")));
-        explosionSprite.setSize(12f + 6 * BetterBreakout.deviceType, 12f + 6 * BetterBreakout.deviceType);
+        explosionSprite.setSize(12f - 3 * BetterBreakout.deviceType, 12f - 3 * BetterBreakout.deviceType);
         Sprite bulletSprite = new Sprite(new Texture(Gdx.files.internal("brick.png")));
-        bulletSprite.setSize(5f + 3 * BetterBreakout.deviceType, 5f + 3 * BetterBreakout.deviceType);
+        bulletSprite.setSize(5f - 1.5f * BetterBreakout.deviceType, 5f - 1.5f * BetterBreakout.deviceType);
 
         particleSprites.put(Particle.ParticleType.EXPLOSION, explosionSprite);
         particleSprites.put(Particle.ParticleType.BULLET, bulletSprite);

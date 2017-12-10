@@ -41,11 +41,11 @@ public class Particle implements DeleteableGameElement {
         return mIsDead;
     }
 
-    public void setDead(boolean isDead) {
+    void setDead(boolean isDead) {
         mIsDead = isDead;
     }
 
-    public Color getColor() {
+    Color getColor() {
         return mColor;
     }
 
@@ -59,7 +59,7 @@ public class Particle implements DeleteableGameElement {
         }
     }
 
-    public ParticleType getParticleType() {
+    ParticleType getParticleType() {
         return mParticleType;
     }
 

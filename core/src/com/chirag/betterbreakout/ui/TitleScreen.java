@@ -1,6 +1,7 @@
 package com.chirag.betterbreakout.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,6 +22,9 @@ public class TitleScreen {
     }
 
     public void update() {
+        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
+        }
         if(playButton.isClicked()) {
             System.out.println("click");
             BetterBreakout.setCurrentScreen(BetterBreakout.Screen.GAME);

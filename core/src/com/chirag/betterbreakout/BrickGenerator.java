@@ -54,9 +54,6 @@ public class BrickGenerator {
     }
 
     void update() {
-        for(Brick b : mBricks) {
-            b.update();
-        }
 
         int rowHeight = Brick.HEIGHT + 12;
         while(mCurrentRow * rowHeight + mBottomY < BetterBreakout.GAME_HEIGHT + Brick.HEIGHT && !mIsStopped) {
@@ -85,7 +82,7 @@ public class BrickGenerator {
     private void addNewRow() {
         int brickPadding = 13;
         int rowHeight = Brick.HEIGHT + brickPadding;
-        int brickLossChance = Math.max(0, (int)(65 - mCurrentRow * 2.1));
+        int brickLossChance = Math.max(0, (int)(65 - mCurrentRow * 2.5));
         for(int i = Brick.WIDTH/2 + brickPadding; i <= BetterBreakout.GAME_WIDTH - Brick.WIDTH/2 - brickPadding; i += Brick.WIDTH + brickPadding) {
             if(mRandom.nextInt(100) < brickLossChance) continue;
             add(i, rowHeight * mCurrentRow, RAINBOW[RAINBOW.length - mCurrentRow % RAINBOW.length - 1]);

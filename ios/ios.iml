@@ -32,7 +32,9 @@
     <orderEntry type="library" exported="" name="robovm-cocoatouch-2.3.1" level="project" />
     <orderEntry type="library" exported="" name="gdx-backend-robovm-1.9.6" level="project" />
     <orderEntry type="library" exported="" name="gdx-platform-1.9.6-natives-ios" level="project" />
+    <orderEntry type="library" exported="" name="gdx-freetype-platform-1.9.6-natives-ios" level="project" />
     <orderEntry type="library" exported="" name="gdx-1.9.6" level="project" />
+    <orderEntry type="library" exported="" name="gdx-freetype-1.9.6" level="project" />
     <orderEntry type="library" exported="" name="robovm-objc-2.3.1" level="project" />
   </component>
 </module>

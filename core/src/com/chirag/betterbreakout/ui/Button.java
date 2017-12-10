@@ -41,8 +41,8 @@ public class Button {
             return false;
         }
 
-        int x = Gdx.input.getX();
-        int y = BetterBreakout.GAME_HEIGHT - Gdx.input.getY();
+        int x = (int)(Gdx.input.getX() * BetterBreakout.scaleMult);
+        int y = (int)(BetterBreakout.GAME_HEIGHT - Gdx.input.getY() * BetterBreakout.scaleMult);
         if(BetterBreakout.deviceType == 0) {
             if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 if(mX - mWidth / 2 < x && x < mX + mWidth / 2 && mY - mHeight / 2 < y && y < mY + mHeight / 2) {

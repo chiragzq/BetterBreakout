@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.chirag.betterbreakout.powerup.PowerUp;
 
 public class PowerUpIcon  {
-    public static final float ICON_SIDE = 100;
+    public static final float ICON_SIDE = 125;
     private Texture timeLeftTexture;
     private long mDuration;
     private long expireTime;
@@ -42,8 +42,9 @@ public class PowerUpIcon  {
             } else {
                 if(power == 0) {
                     path = "icon_BADPADDLESPEED.png";
+                } else {
+                    path = "icon_GOODPADDLESPEED.png";
                 }
-                path = "icon_GOODPADDLESPEED.png";
             }
         }
         mTexture = new Texture(path);

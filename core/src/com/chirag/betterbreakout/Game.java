@@ -1,5 +1,7 @@
 package com.chirag.betterbreakout;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,6 +14,7 @@ import com.chirag.betterbreakout.powerup.Laser;
 import com.chirag.betterbreakout.powerup.Particle;
 import com.chirag.betterbreakout.powerup.PowerUp;
 import com.chirag.betterbreakout.ui.FuelBar;
+import com.chirag.betterbreakout.ui.PauseButton;
 import com.chirag.betterbreakout.ui.PowerUpIcon;
 
 import java.util.ArrayList;
@@ -25,6 +28,7 @@ public class Game {
 
     public static int score;
 
+    private PauseButton pauseButton;
     private GlyphLayout glyphLayout;
     private Texture brickTexture;
     private Texture powerTexture;
@@ -42,11 +46,12 @@ public class Game {
     Game(Texture brickTexture, Texture powerTexture) {
         this.powerTexture = powerTexture;
         this.brickTexture = brickTexture;
+        pauseButton = new PauseButton(BetterBreakout.GAME_WIDTH + 115, 90, 125);
         bricks = new BrickGenerator(brickTexture);
 
         balls = new ArrayList<Ball>();
         paddle = new Paddle(brickTexture, 80);
-        paddle.setMaxFuel(10000);
+        paddle.setMaxFuel();
         balls.add(new Ball(15, paddle.getX(), 110, brickTexture));
         mFuelBar = new FuelBar(brickTexture, 10000);
 
@@ -62,6 +67,9 @@ public class Game {
 
     void update() {
         bricks.moveDown(0.1f);
+        if(pauseButton.isClicked() || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            BetterBreakout.pause2();
+        }
 
         List<Brick> toDelBrick = new ArrayList<Brick>();
         List<Ball> toDelBall = new ArrayList<Ball>();
@@ -101,7 +109,8 @@ public class Game {
             if(laser.isActive()) {
                 for(Brick b : bricks.getBricks()) {
                     if(Math.abs(b.getX() - laser.getX()) < 51) {
-                        b.setDead(true);
+                        toDelBrick.add(b);
+                        explosions.add(new Explosion(b.getX(), b.getY(), b.getColor(), Particle.ParticleType.BULLET));
                     }
                 }
                 laser.setActive(false);
@@ -219,6 +228,7 @@ public class Game {
 
         glyphLayout.setText(smallFont, "Score: " + score);
         smallFont.draw(batch, "Score: " + score, 1790 - glyphLayout.width / 2, BetterBreakout.GAME_HEIGHT - 10);
+        pauseButton.draw(batch);
     }
 
     private static boolean isColliding(Sprite s1, Sprite s2) {
@@ -347,7 +357,7 @@ public class Game {
                 } else {
                     powerIcons.add(new PowerUpIcon(p, 0, 10000));
 
-                    paddle.setSpeed(12f);
+                    paddle.setSpeed(10f);
                 }
                 activePowerups.add(PowerUp.Power.PADDLE_SPEED);
                 TimeUtil.doLater(new Runnable() {
@@ -429,7 +439,7 @@ public class Game {
                             20,
                             20));
                 }
-                score++;
+                score += 3;
                 ball.updateAngle();
                 break;
             case TOP:
@@ -445,7 +455,7 @@ public class Game {
                             20,
                             20));
                 }
-                score++;
+                score += 3;
                 ball.updateAngle();
                 break;
         }
@@ -456,10 +466,10 @@ public class Game {
 
         balls = new ArrayList<Ball>();
         paddle = new Paddle(brickTexture, 80);
-        paddle.setMaxFuel(10000);
+        paddle.setMaxFuel();
         balls.add(new Ball(15, paddle.getX(), 110, brickTexture));
         mFuelBar = new FuelBar(brickTexture, 10000);
-
+        TimeUtil.clear();
         lasers = new ArrayList<Laser>();
         powerUps = new ArrayList<PowerUp>();
         explosions = new ArrayList<Explosion>();

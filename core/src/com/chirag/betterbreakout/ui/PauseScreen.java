@@ -1,5 +1,7 @@
 package com.chirag.betterbreakout.ui;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,15 +14,14 @@ public class PauseScreen {
     private Button quitButton;
 
     public PauseScreen(BitmapFont font, BitmapFont bigFont) {
-        BitmapFont titleFont = font;
         bigTitleFont = bigFont;
         glyphLayout = new GlyphLayout();
-        playButton = new Button(font, "Resume", BetterBreakout.GAME_FULLWIDTH / 2, BetterBreakout.GAME_HEIGHT / 2);
-        quitButton = new Button(font, "Exit", BetterBreakout.GAME_FULLWIDTH / 2 , BetterBreakout.GAME_HEIGHT / 2 - 150);
+        playButton = new Button(font, "Resume", BetterBreakout.GAME_FULLWIDTH / 2, BetterBreakout.GAME_HEIGHT / 2 - 250);
+        quitButton = new Button(font, "Exit", BetterBreakout.GAME_FULLWIDTH / 2 , BetterBreakout.GAME_HEIGHT / 2 - 400);
     }
 
     public void update() {
-        if(playButton.isClicked()) {
+        if(playButton.isClicked() || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             System.out.println("click");
             BetterBreakout.setCurrentScreen(BetterBreakout.Screen.GAME);
         }

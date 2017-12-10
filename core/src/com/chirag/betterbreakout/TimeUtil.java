@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class TimeUtil {
     static boolean active = false;
-    static long lastTime = System.nanoTime();
+    private static long lastTime = System.nanoTime();
 
     private static class Task {
         long duration;
@@ -45,6 +45,10 @@ public class TimeUtil {
         } else {
             lastTime = System.nanoTime();
         }
+    }
+
+    static void clear() {
+        tasks.clear();
     }
 }
 

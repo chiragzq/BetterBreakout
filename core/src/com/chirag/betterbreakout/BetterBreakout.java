@@ -104,7 +104,11 @@ public class BetterBreakout extends ApplicationAdapter {
 	@Override
 	public void pause() {
 		if(deviceType == 1 && currentScreen == Screen.GAME)
-			currentScreen = Screen.PAUSE;
+			pause2();
+	}
+
+	static void pause2() {
+		currentScreen = Screen.PAUSE;
 	}
 
 	@Override

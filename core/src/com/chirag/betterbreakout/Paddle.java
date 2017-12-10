@@ -29,11 +29,11 @@ public class Paddle implements Rectangular{
         WIDTHS.put(State.SMALL, 75);
         WIDTHS.put(State.LARGE, 225);
 
-        FUEL_MULTIPLIER.put(Efficiency.TERRIBLE, 2f);
-        FUEL_MULTIPLIER.put(Efficiency.BAD, 1.6f);
-        FUEL_MULTIPLIER.put(Efficiency.NORMAL, 1.2f);
-        FUEL_MULTIPLIER.put(Efficiency.GOOD, 1f);
-        FUEL_MULTIPLIER.put(Efficiency.AMAZING, 0.8f);
+        FUEL_MULTIPLIER.put(Efficiency.TERRIBLE, 1.5f);
+        FUEL_MULTIPLIER.put(Efficiency.BAD, 1.2f);
+        FUEL_MULTIPLIER.put(Efficiency.NORMAL, 0.7f);
+        FUEL_MULTIPLIER.put(Efficiency.GOOD, 0.6f);
+        FUEL_MULTIPLIER.put(Efficiency.AMAZING, 0.4f);
 
         EFFICIENCY_COLOR.put(Efficiency.TERRIBLE, Color.RED);
         EFFICIENCY_COLOR.put(Efficiency.BAD, Color.ORANGE);
@@ -61,7 +61,7 @@ public class Paddle implements Rectangular{
         mX = BetterBreakout.GAME_WIDTH/2;
         mY = y;
         mWidth = WIDTHS.get(State.NORMAL);
-        mFuel = 10001;
+        mFuel = 5000;
         mMaxFuel = 10000;
         mSpeed = 15;
 
@@ -115,8 +115,8 @@ public class Paddle implements Rectangular{
         mSpeed = speed;
     }
 
-    void setMaxFuel(float amt) {
-        mMaxFuel = amt;
+    void setMaxFuel() {
+        mMaxFuel = (float) 10000;
     }
 
     void update() {
