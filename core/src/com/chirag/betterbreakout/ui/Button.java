@@ -9,8 +9,8 @@ import com.chirag.betterbreakout.BetterBreakout;
 
 public class Button {
     private boolean canClick = true;
-    private float mX;
-    private float mY;
+    public float mX;
+    public float mY;
     private float mWidth;
     private float mHeight;
     private BitmapFont mFont;
@@ -41,8 +41,8 @@ public class Button {
             return false;
         }
 
-        int x = (int)(Gdx.input.getX() * BetterBreakout.scaleMult);
-        int y = (int)(BetterBreakout.GAME_HEIGHT - Gdx.input.getY() * BetterBreakout.scaleMult);
+        int x = (int)(Gdx.input.getX() * BetterBreakout.scaleX);
+        int y = (int)(BetterBreakout.GAME_HEIGHT - Gdx.input.getY() * BetterBreakout.scaleY);
         if(BetterBreakout.deviceType == 0) {
             if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 if(mX - mWidth / 2 < x && x < mX + mWidth / 2 && mY - mHeight / 2 < y && y < mY + mHeight / 2) {

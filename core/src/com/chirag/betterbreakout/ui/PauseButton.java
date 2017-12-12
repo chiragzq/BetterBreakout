@@ -3,8 +3,6 @@ package com.chirag.betterbreakout.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.chirag.betterbreakout.BetterBreakout;
 
@@ -36,8 +34,8 @@ public class PauseButton {
             return false;
         }
 
-        int x = (int)(Gdx.input.getX() * BetterBreakout.scaleMult);
-        int y = (int)(BetterBreakout.GAME_HEIGHT - Gdx.input.getY() * BetterBreakout.scaleMult);
+        int x = (int)(Gdx.input.getX() * BetterBreakout.scaleX);
+        int y = (int)(BetterBreakout.GAME_HEIGHT - Gdx.input.getY() * BetterBreakout.scaleY);
         if(BetterBreakout.deviceType == 0) {
             if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 if(mX - mSize / 2 < x && x < mX + mSize / 2 && mY - mSize / 2 < y && y < mY + mSize / 2) {

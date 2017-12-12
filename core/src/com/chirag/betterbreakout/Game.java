@@ -134,7 +134,7 @@ public class Game {
                 balls.clear();
             }
             if(b.getY() < -1 * Brick.HEIGHT/2) {
-                b.setDead(true);
+                b.setDead();
                 score -= 5;
             }
         }
@@ -150,7 +150,7 @@ public class Game {
                 if(brick.isDead()) {
                     explosions.add(new Explosion(brick.getX(), brick.getY(), brick.getColor(), Particle.ParticleType.EXPLOSION));
                     toDelBrick.add(brick);
-                } else {
+                } else if (!brick.isHit()){
                     doBallBrickCollision(ball, brick);
                 }
             }
@@ -431,7 +431,7 @@ public class Game {
                 ball.stepBack();
                 ball.reverseX();
                 brick.gotHit();
-                if(Math.random() > 0.4) {
+                if(Math.random() > 0.5) {
                     powerUps.add(new PowerUp(
                             powerTexture,
                             (int) brick.getX(),
@@ -447,7 +447,7 @@ public class Game {
                 ball.stepBack();
                 ball.reverseY();
                 brick.gotHit();
-                if(Math.random() > 0.4) {
+                if(Math.random() > 0.5) {
                     powerUps.add(new PowerUp(
                             powerTexture,
                             (int) brick.getX(),

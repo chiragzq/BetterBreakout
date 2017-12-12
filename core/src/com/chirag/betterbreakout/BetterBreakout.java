@@ -21,7 +21,9 @@ public class BetterBreakout extends ApplicationAdapter {
 	private static Screen currentScreen;
 
 	public static int deviceType; //0 = desktop, 1 = mobile
-	public final static float scaleMult = 1f; //how much zoomed in it is
+	public final static float appSizeScale = 1f; //how much zoomed in it is
+	public static float scaleX;
+	public static float scaleY;
 	private SpriteBatch batch;
 	private BitmapFont smallFont;
 	private BitmapFont normalFont;
@@ -46,14 +48,17 @@ public class BetterBreakout extends ApplicationAdapter {
 	public void create() {
 		Particle.loadAllTextures();
 		initializeFonts();
-
+		scaleX = 1920f / Gdx.app.getGraphics().getWidth();
+		scaleY = 1080f / Gdx.app.getGraphics().getHeight();
+		System.out.println(Gdx.app.getGraphics().getWidth() + " " + Gdx.app.getGraphics().getHeight());
+		System.out.println(scaleX + " " + scaleY);
 		loseScreen = new LoseScreen(titleFont, bigTitleFont);
 		pauseScreen = new PauseScreen(titleFont, bigTitleFont);
 		titleScreen = new TitleScreen(titleFont, bigTitleFont);
 		game = new Game(new Texture("brick.png"), new Texture("power.png"));
 
 		Matrix4 transform = new Matrix4();
-		transform.scale(1 / scaleMult, 1 / scaleMult, 1 / scaleMult);
+		transform.scale(1 / scaleX, 1 / scaleY, 1 / appSizeScale);
 		batch = new SpriteBatch();
 		batch.setTransformMatrix(transform);
 	}

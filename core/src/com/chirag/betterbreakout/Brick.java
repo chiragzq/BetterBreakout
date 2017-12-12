@@ -12,6 +12,7 @@ class Brick implements DeleteableGameElement, Rectangular {
 
     private Sprite mSprite;
     private boolean mIsDead;
+    private boolean mIsHit;
     private float mX;
     private float mY;
     private BrickGenerator mBrickGenerator;
@@ -25,6 +26,7 @@ class Brick implements DeleteableGameElement, Rectangular {
         mX = x;
         mY = y;
         mBrickGenerator = brickGenerator;
+        mIsHit = false;
     }
 
     //Getters
@@ -61,9 +63,13 @@ class Brick implements DeleteableGameElement, Rectangular {
         return mColor;
     }
 
+    boolean isHit() {
+        return mIsHit;
+    }
+
     //Setters
-    void setDead(boolean isDead) {
-        mIsDead = isDead;
+    void setDead() {
+        mIsDead = true;
     }
 
     //Main
@@ -85,6 +91,7 @@ class Brick implements DeleteableGameElement, Rectangular {
             }
         }, 100);
         mSprite.setColor(mSprite.getColor().mul(0.75f));
+        mIsHit = true;
     }
 
 
