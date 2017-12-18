@@ -23,7 +23,8 @@ public class TitleScreen {
 
     public void update() {
         if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            System.out.println("Click at: " + Gdx.input.getX() + " " + Gdx.input.getY());
+            System.out.println("Click at: " + Gdx.input.getX() + " " + (BetterBreakout.GAME_HEIGHT - Gdx.input.getY()));
+            System.out.println("Actual click at: " + (Gdx.input.getX() * BetterBreakout.scaleX) + " " + (BetterBreakout.GAME_HEIGHT - Gdx.input.getY() * BetterBreakout.scaleY));
             System.out.println("Button at: " + playButton.mX + " " + playButton.mY);
         }
         if(playButton.isClicked()) {

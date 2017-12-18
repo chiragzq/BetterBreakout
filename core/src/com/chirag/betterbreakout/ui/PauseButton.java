@@ -46,8 +46,8 @@ public class PauseButton {
         } else {
             for(int i = 0; i < 9;i ++) {
                 if(Gdx.input.isTouched(i)) {
-                    x = Gdx.input.getX(i);
-                    y = BetterBreakout.GAME_HEIGHT - Gdx.input.getY(i);
+                    x = (int)(Gdx.input.getX() * BetterBreakout.scaleX);
+                    y = (int)(BetterBreakout.GAME_HEIGHT - Gdx.input.getY() * BetterBreakout.scaleY);
                     if(mX - mSize / 2 < x && x < mX + mSize / 2 && mY - mSize / 2 < y && y < mY + mSize / 2) {
                         canClick = false;
                         return true;

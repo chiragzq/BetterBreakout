@@ -27,7 +27,7 @@ public class Button {
         mText = text;
     }
 
-    public boolean isClicked() {
+    boolean isClicked() {
         if(!canClick) {
             if(BetterBreakout.deviceType == 0) {
                 if(!Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
@@ -53,8 +53,8 @@ public class Button {
         } else {
             for(int i = 0; i < 9;i ++) {
                 if(Gdx.input.isTouched(i)) {
-                    x = Gdx.input.getX(i);
-                    y = BetterBreakout.GAME_HEIGHT - Gdx.input.getY(i);
+                    x = (int)(Gdx.input.getX() * BetterBreakout.scaleX);
+                    y = (int)(BetterBreakout.GAME_HEIGHT - Gdx.input.getY() * BetterBreakout.scaleY);
                     if(mX - mWidth / 2 < x && x < mX + mWidth / 2 && mY - mHeight / 2 < y && y < mY + mHeight / 2) {
                         canClick = false;
                         return true;

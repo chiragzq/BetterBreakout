@@ -7,8 +7,17 @@
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
-        sha1="33a3333e88ec033fda3360a27ca061a9ccc5b448">
+        sha1="63a1ce092fa3fff1c5b069a677d5cbd887b9a173">
         <dex dex="/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/pre-dexed/debug/core-1.0_baa11e7fd800547f5fa5f655c0e8403fab4b297a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/spafindoople/Downloads/BetterBreakout/core/build/libs/core-1.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="8f435929315c4c252db566945e06ba0d83793b88">
+        <dex dex="/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/pre-dexed/release/core-1.1_b8b20e7442b8c90637027c5c2d3c98b6127857b1.jar" />
     </item>
 
 </items>
