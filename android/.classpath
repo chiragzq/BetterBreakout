@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/Android API 20 Platform"/>
+	<classpathentry kind="src" path="build/generated/source/r/debug"/>
+	<classpathentry kind="src" path="build/generated/source/aidl/debug"/>
+	<classpathentry kind="src" path="build/generated/source/buildConfig/debug"/>
+	<classpathentry kind="src" path="build/generated/source/rs/debug"/>
+	<classpathentry kind="src" path="build/generated/source/apt/debug"/>
+	<classpathentry kind="src" path="build/generated/res/rs/debug"/>
+	<classpathentry kind="src" path="build/generated/res/resValues/debug"/>
+	<classpathentry kind="src" path="build/generated/source/r/androidTest/debug"/>
+	<classpathentry kind="src" path="build/generated/source/aidl/androidTest/debug"/>
+	<classpathentry kind="src" path="build/generated/source/buildConfig/androidTest/debug"/>
+	<classpathentry kind="src" path="build/generated/source/rs/androidTest/debug"/>
+	<classpathentry kind="src" path="build/generated/source/apt/androidTest/debug"/>
+	<classpathentry kind="src" path="build/generated/res/rs/androidTest/debug"/>
+	<classpathentry kind="src" path="build/generated/res/resValues/androidTest/debug"/>
+	<classpathentry kind="src" path="src/debug/res"/>
+	<classpathentry kind="src" path="src/debug/resources"/>
+	<classpathentry kind="src" path="src/debug/assets"/>
+	<classpathentry kind="src" path="src/debug/aidl"/>
+	<classpathentry kind="src" path="src/debug/java"/>
+	<classpathentry kind="src" path="src/debug/jni"/>
+	<classpathentry kind="src" path="src/debug/rs"/>
+	<classpathentry kind="src" path="src/debug/shaders"/>
+	<classpathentry kind="src" path="src/testDebug/res"/>
+	<classpathentry kind="src" path="src/testDebug/resources"/>
+	<classpathentry kind="src" path="src/testDebug/assets"/>
+	<classpathentry kind="src" path="src/testDebug/aidl"/>
+	<classpathentry kind="src" path="src/testDebug/java"/>
+	<classpathentry kind="src" path="src/testDebug/jni"/>
+	<classpathentry kind="src" path="src/testDebug/rs"/>
+	<classpathentry kind="src" path="src/testDebug/shaders"/>
+	<classpathentry kind="src" path="res"/>
+	<classpathentry kind="src" path="src/main/resources"/>
+	<classpathentry kind="src" path="assets"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="src/main/jni"/>
+	<classpathentry kind="src" path="src/main/shaders"/>
+	<classpathentry kind="src" path="src/androidTest/res"/>
+	<classpathentry kind="src" path="src/androidTest/resources"/>
+	<classpathentry kind="src" path="src/androidTest/assets"/>
+	<classpathentry kind="src" path="src/androidTest/aidl"/>
+	<classpathentry kind="src" path="src/androidTest/java"/>
+	<classpathentry kind="src" path="src/androidTest/jni"/>
+	<classpathentry kind="src" path="src/androidTest/rs"/>
+	<classpathentry kind="src" path="src/androidTest/shaders"/>
+	<classpathentry kind="src" path="src/test/res"/>
+	<classpathentry kind="src" path="src/test/resources"/>
+	<classpathentry kind="src" path="src/test/assets"/>
+	<classpathentry kind="src" path="src/test/aidl"/>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="src" path="src/test/jni"/>
+	<classpathentry kind="src" path="src/test/rs"/>
+	<classpathentry kind="src" path="src/test/shaders"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/gdx-backend-android-1.9.6"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/gdx-1.9.6"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/gdx-freetype-1.9.6"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/core"/>
+	<classpathentry kind="output" path="build/intermediates/classes/debug"/>
+</classpath>

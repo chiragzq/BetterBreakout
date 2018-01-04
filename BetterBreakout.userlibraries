@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="gdx-backend-android-1.9.6">
+    <archive path="/home/spafindoople/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-android/1.9.6/57c2831c870743712b808384187ea856e541878f/gdx-backend-android-1.9.6.jar" />
+  </library>
+  <library name="gdx-1.9.6">
+    <archive path="/home/spafindoople/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.6/47d1e9b890e364ec28f128e9bb3b9a12a94c164/gdx-1.9.6.jar" />
+  </library>
+  <library name="gdx-freetype-1.9.6">
+    <archive path="/home/spafindoople/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-freetype/1.9.6/69187cc3c8062f191df435b43671b0e5ffcbf353/gdx-freetype-1.9.6.jar" />
+  </library>
+  <library name="gdx-backend-lwjgl-1.9.6">
+    <archive path="/home/spafindoople/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-lwjgl/1.9.6/ee7c23636ee4a942d329579daecc3ec5e517fe4c/gdx-backend-lwjgl-1.9.6.jar" />
+  </library>
+  <library name="gdx-platform-1.9.6-natives-desktop">
+    <archive path="/home/spafindoople/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-platform/1.9.6/6f84dd7a18dc68e4ec492dfbb0594f930babcf63/gdx-platform-1.9.6-natives-desktop.jar" />
+  </library>
+  <library name="gdx-freetype-platform-1.9.6-natives-desktop">
+    <archive path="/home/spafindoople/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-freetype-platform/1.9.6/4c24b0349ba9756a29e84a77dcb2f17e47bbcef3/gdx-freetype-platform-1.9.6-natives-desktop.jar" />
+  </library>
+  <library name="lwjgl-2.9.2">
+    <archive path="/home/spafindoople/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl/2.9.2/a9d80fe5935c7a9149f6584d9777cfd471f65489/lwjgl-2.9.2.jar" />
+  </library>
+  <library name="lwjgl_util-2.9.2">
+    <archive path="/home/spafindoople/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl_util/2.9.2/4b9e37300a87799856e0bd15ed81663cdb6b0947/lwjgl_util-2.9.2.jar" />
+  </library>
+  <library name="jlayer-1.0.1-gdx">
+    <archive path="/home/spafindoople/.gradle/caches/modules-2/files-2.1/com.badlogicgames.jlayer/jlayer/1.0.1-gdx/7cca83cec5c1b2f011362f4d85aabd71a73b049d/jlayer-1.0.1-gdx.jar" />
+  </library>
+  <library name="jorbis-0.0.17">
+    <archive path="/home/spafindoople/.gradle/caches/modules-2/files-2.1/org.jcraft/jorbis/0.0.17/8872d22b293e8f5d7d56ff92be966e6dc28ebdc6/jorbis-0.0.17.jar" />
+  </library>
+  <library name="lwjgl-platform-2.9.2-natives-windows">
+    <archive path="/home/spafindoople/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl-platform/2.9.2/510c7d317f5e9e700b9cfaac5fd38bdebf0702e0/lwjgl-platform-2.9.2-natives-windows.jar" />
+  </library>
+  <library name="lwjgl-platform-2.9.2-natives-linux">
+    <archive path="/home/spafindoople/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl-platform/2.9.2/d276cdf61fe2b516c7b7f4aa1b8dea91dbdc8d56/lwjgl-platform-2.9.2-natives-linux.jar" />
+  </library>
+  <library name="lwjgl-platform-2.9.2-natives-osx">
+    <archive path="/home/spafindoople/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl-platform/2.9.2/d55b46b40b40249d627a83a7f7f22649709d70c3/lwjgl-platform-2.9.2-natives-osx.jar" />
+  </library>
+  <library name="jinput-2.0.5">
+    <archive path="/home/spafindoople/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput/2.0.5/39c7796b469a600f72380316f6b1f11db6c2c7c4/jinput-2.0.5.jar" />
+  </library>
+  <library name="jutils-1.0.0">
+    <archive path="/home/spafindoople/.gradle/caches/modules-2/files-2.1/net.java.jutils/jutils/1.0.0/e12fe1fda814bd348c1579329c86943d2cd3c6a6/jutils-1.0.0.jar" />
+  </library>
+  <library name="jinput-platform-2.0.5-natives-linux">
+    <archive path="/home/spafindoople/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/7ff832a6eb9ab6a767f1ade2b548092d0fa64795/jinput-platform-2.0.5-natives-linux.jar" />
+  </library>
+  <library name="jinput-platform-2.0.5-natives-windows">
+    <archive path="/home/spafindoople/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/385ee093e01f587f30ee1c8a2ee7d408fd732e16/jinput-platform-2.0.5-natives-windows.jar" />
+  </library>
+  <library name="jinput-platform-2.0.5-natives-osx">
+    <archive path="/home/spafindoople/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/53f9c919f34d2ca9de8c51fc4e1e8282029a9232/jinput-platform-2.0.5-natives-osx.jar" />
+  </library>
+  <library name="desktop.desktop-1.1">
+    <archive path="/home/spafindoople/Downloads/BetterBreakout/desktop/build/libs/desktop-1.1.jar" />
+  </library>
+  <library name="core.core-1.1">
+    <archive path="/home/spafindoople/Downloads/BetterBreakout/core/build/libs/core-1.1.jar" />
+  </library>
+</eclipse-userlibraries>
+

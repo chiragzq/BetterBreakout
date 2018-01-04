@@ -14,7 +14,6 @@ public class TitleScreen {
     private Button quitButton;
 
     public TitleScreen(BitmapFont font, BitmapFont bigFont) {
-        BitmapFont titleFont = font;
         bigTitleFont = bigFont;
         glyphLayout = new GlyphLayout();
         playButton = new Button(font, "Play", BetterBreakout.GAME_FULLWIDTH / 2, BetterBreakout.GAME_HEIGHT / 2);

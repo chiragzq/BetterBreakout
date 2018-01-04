@@ -35,8 +35,8 @@ public class LoseScreen {
     }
 
     public void draw(SpriteBatch batch) {
-        glyphLayout = new GlyphLayout(bigTitleFont, "You Lose");
-        bigTitleFont.draw(batch, "You Lose", BetterBreakout.GAME_FULLWIDTH / 2 - glyphLayout.width / 2, BetterBreakout.GAME_HEIGHT / 2 - glyphLayout.height/2 + 400);
+        glyphLayout = new GlyphLayout(bigTitleFont, "Game Over");
+        bigTitleFont.draw(batch, "Game Over", BetterBreakout.GAME_FULLWIDTH / 2 - glyphLayout.width / 2, BetterBreakout.GAME_HEIGHT / 2 - glyphLayout.height/2 + 400);
         glyphLayout = new GlyphLayout(smallFont, "Score: " + com.chirag.betterbreakout.Game.score);
         smallFont.draw(batch, "Score: " + com.chirag.betterbreakout.Game.score, BetterBreakout.GAME_FULLWIDTH / 2 - glyphLayout.width / 2, BetterBreakout.GAME_HEIGHT / 2 - glyphLayout.height/2 + 200);
         restartButton.draw(batch);

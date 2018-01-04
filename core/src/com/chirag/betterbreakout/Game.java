@@ -42,8 +42,12 @@ public class Game {
     private List<Bullet> bullets;
     private List<PowerUp.Power> activePowerups = new ArrayList<PowerUp.Power>();
     private List<PowerUpIcon> powerIcons;
+    private void test(){
+
+    }
 
     Game(Texture brickTexture, Texture powerTexture) {
+        test();
         this.powerTexture = powerTexture;
         this.brickTexture = brickTexture;
         pauseButton = new PauseButton(BetterBreakout.GAME_WIDTH + 115, 90, 125);
@@ -357,13 +361,13 @@ public class Game {
                 } else {
                     powerIcons.add(new PowerUpIcon(p, 0, 10000));
 
-                    paddle.setSpeed(10f);
+                paddle.setSpeed(8);
                 }
                 activePowerups.add(PowerUp.Power.PADDLE_SPEED);
                 TimeUtil.doLater(new Runnable() {
                     @Override
                     public void run() {
-                        paddle.setSpeed(10);
+                        paddle.setSpeed(15);
                         activePowerups.remove(PowerUp.Power.PADDLE_SPEED);
                     }
                 }, 12000);
