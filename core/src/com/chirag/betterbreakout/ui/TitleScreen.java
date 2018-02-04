@@ -12,12 +12,14 @@ public class TitleScreen {
     private GlyphLayout glyphLayout;
     private Button playButton;
     private Button quitButton;
+    private Button tutorialButton;
 
     public TitleScreen(BitmapFont font, BitmapFont bigFont) {
         bigTitleFont = bigFont;
         glyphLayout = new GlyphLayout();
-        playButton = new Button(font, "Play", BetterBreakout.GAME_FULLWIDTH / 2, BetterBreakout.GAME_HEIGHT / 2);
-        quitButton = new Button(font, "Quit", BetterBreakout.GAME_FULLWIDTH / 2 , BetterBreakout.GAME_HEIGHT / 2 - 150);
+        playButton = new Button(font, "Play", BetterBreakout.GAME_FULLWIDTH / 2, BetterBreakout.GAME_HEIGHT / 2 + 100);
+        quitButton = new Button(font, "Quit", BetterBreakout.GAME_FULLWIDTH / 2 , BetterBreakout.GAME_HEIGHT / 2 - 200);
+        tutorialButton = new Button(font, "Tutorial", BetterBreakout.GAME_FULLWIDTH / 2, BetterBreakout.GAME_HEIGHT / 2 - 50);
     }
 
     public void update() {
@@ -30,6 +32,9 @@ public class TitleScreen {
             System.out.println("click");
             BetterBreakout.setCurrentScreen(BetterBreakout.Screen.GAME);
         }
+        if(tutorialButton.isClicked()) {
+            BetterBreakout.setCurrentScreen(BetterBreakout.Screen.TUTORIAL);
+        }
         if(quitButton.isClicked()) {
             System.out.println("click");
             Gdx.app.exit();
@@ -41,5 +46,6 @@ public class TitleScreen {
         bigTitleFont.draw(batch, "Better Breakout", BetterBreakout.GAME_FULLWIDTH / 2 - glyphLayout.width / 2, BetterBreakout.GAME_HEIGHT / 2 - glyphLayout.height/2 + 400);
         playButton.draw(batch);
         quitButton.draw(batch);
+        tutorialButton.draw(batch);
     }
 }

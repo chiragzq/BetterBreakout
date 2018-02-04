@@ -3,12 +3,12 @@
 
     <item
         is-multidex="false"
-        jar="/home/spafindoople/Downloads/BetterBreakout/core/build/libs/core-1.1.jar"
+        jar="/home/spafindoople/Downloads/BetterBreakout/core/build/libs/core-1.2.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
-        sha1="d45a778bd4635419352cacfe11a4bbc74b046624">
-        <dex dex="/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/pre-dexed/debug/core-1.1_b8b20e7442b8c90637027c5c2d3c98b6127857b1.jar" />
+        sha1="7810958802b98bbc476d79947271d608a5176f54">
+        <dex dex="/home/spafindoople/Downloads/BetterBreakout/android/build/intermediates/pre-dexed/release/core-1.2_112b014db51fe269329af2283bd678b95604bf13.jar" />
     </item>
 
 </items>

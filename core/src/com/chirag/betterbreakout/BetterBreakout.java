@@ -12,10 +12,11 @@ import com.chirag.betterbreakout.powerup.Particle;
 import com.chirag.betterbreakout.ui.LoseScreen;
 import com.chirag.betterbreakout.ui.PauseScreen;
 import com.chirag.betterbreakout.ui.TitleScreen;
+import com.chirag.betterbreakout.ui.Tutorial;
 
 public class BetterBreakout extends ApplicationAdapter {
 	public enum Screen {
-		TITLE, LOSE, PAUSE, GAME
+		TITLE, LOSE, PAUSE, GAME, TUTORIAL
 	}
 
 	private static Screen currentScreen;
@@ -33,6 +34,7 @@ public class BetterBreakout extends ApplicationAdapter {
 	private PauseScreen pauseScreen;
 	private LoseScreen loseScreen;
 	private TitleScreen titleScreen;
+	private Tutorial tutorial;
 	public static final int GAME_WIDTH = 1680;
 	public static final int GAME_PADDING = 240;
 	public static final int GAME_HEIGHT = 1080;
@@ -55,6 +57,7 @@ public class BetterBreakout extends ApplicationAdapter {
 		loseScreen = new LoseScreen(titleFont, bigTitleFont);
 		pauseScreen = new PauseScreen(titleFont, bigTitleFont);
 		titleScreen = new TitleScreen(titleFont, bigTitleFont);
+		tutorial = new Tutorial();
 		game = new Game(new Texture("brick.png"), new Texture("power.png"));
 
 		Matrix4 transform = new Matrix4();
@@ -82,6 +85,13 @@ public class BetterBreakout extends ApplicationAdapter {
 			case TITLE:
 				titleScreen.update();
 				break;
+			case TUTORIAL:
+				tutorial.update();
+				if(tutorial.isDone()) {
+					currentScreen = Screen.TITLE;
+					tutorial.reset();
+				}
+				break;
 		}
 
 		Gdx.gl.glClearColor(0.08f, 0.08f, 0.05f, 1);
@@ -99,6 +109,9 @@ public class BetterBreakout extends ApplicationAdapter {
 				break;
 			case TITLE:
 				titleScreen.draw(batch);
+				break;
+			case TUTORIAL:
+				tutorial.draw(batch);
 				break;
 		}
 
